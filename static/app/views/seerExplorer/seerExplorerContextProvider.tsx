@@ -2,15 +2,13 @@ import {useCallback, useEffect, useMemo, useRef, useState, type ReactNode} from 
 
 import {useHotkeys} from '@sentry/scraps/hotkey';
 import {useModal} from '@sentry/scraps/modal';
-import {
-  PictureInPicturePortal,
-  usePictureInPicture,
-} from '@sentry/scraps/pictureInPicture';
+import {usePictureInPicture} from '@sentry/scraps/pictureInPicture';
 
 import {
   AutofixChatProvider,
   type SendMessageOptions,
 } from 'sentry/components/seer/autofixChatContext';
+import {SentryPictureInPicturePortal} from 'sentry/scrapsProviders/pictureInPicture';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {getDateFromTimestampAssumeUtc} from 'sentry/utils/dates';
 import {useIsSeerExplorerSidebarEnabled} from 'sentry/utils/seer/isSeerExplorerEnabled';
@@ -468,7 +466,7 @@ export function SeerExplorerContextProvider({children}: {children: ReactNode}) {
       <AutofixChatProvider sendMessage={isPoppedOut ? undefined : openChatWithMessage}>
         {children}
         {pipWindow && (
-          <PictureInPicturePortal pipWindow={pipWindow}>
+          <SentryPictureInPicturePortal pipWindow={pipWindow}>
             <SeerExplorerErrorBoundary>
               {/* Pop out the content of whichever surface is active: the decoupled
                 sidebar content when Seer Explorer is enabled (there is no drawer
@@ -487,7 +485,7 @@ export function SeerExplorerContextProvider({children}: {children: ReactNode}) {
                 <ExplorerDrawerContent getPageReferrer={getPageReferrer} />
               )}
             </SeerExplorerErrorBoundary>
-          </PictureInPicturePortal>
+          </SentryPictureInPicturePortal>
         )}
       </AutofixChatProvider>
     </SeerExplorerContext.Provider>

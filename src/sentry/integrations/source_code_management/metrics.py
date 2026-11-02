@@ -66,9 +66,6 @@ class SCMIntegrationInteractionType(StrEnum):
     # Status Checks
     CREATE_STATUS_CHECK = "create_status_check"
 
-    # Rate Limiting
-    GET_RATE_LIMIT = "get_rate_limit"
-
     # Repo Trees
     GET_REPO_TREE = "get_repo_tree"
 

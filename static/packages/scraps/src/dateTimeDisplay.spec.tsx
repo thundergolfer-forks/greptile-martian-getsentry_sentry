@@ -33,10 +33,7 @@ describe('DateTime', () => {
   });
 
   it('renders a date and shows the year if it is outside the current year', () => {
-    const date = new Date();
-    date.setFullYear(2016);
-    date.setMonth(11);
-    date.setDate(31);
+    const date = new Date('2017-01-01T03:41:20.000Z');
 
     renderPDT(<DateTime date={date} />);
     expect(screen.getByText('Dec 31, 2016 7:41 PM')).toBeInTheDocument();

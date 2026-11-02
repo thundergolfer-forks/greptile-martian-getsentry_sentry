@@ -465,9 +465,6 @@ importers:
       '@r4ai/remark-callout':
         specifier: ^0.6.2
         version: 0.6.2
-      '@react-aria/button':
-        specifier: 3.15.1
-        version: 3.15.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@react-aria/combobox':
         specifier: 3.16.1
         version: 3.16.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)

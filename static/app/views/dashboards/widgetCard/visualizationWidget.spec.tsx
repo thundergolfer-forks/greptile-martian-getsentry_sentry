@@ -6,6 +6,7 @@ import {render, screen, userEvent, waitFor} from 'sentry-test/reactTestingLibrar
 
 import {Button} from '@sentry/scraps/button';
 
+import {closeModal} from 'sentry/actionCreators/modal';
 import {PageFiltersStore} from 'sentry/components/pageFilters/store';
 import {DisplayType, WidgetType} from 'sentry/views/dashboards/types';
 import type {WidgetTimeSeries} from 'sentry/views/dashboards/utils/transformTimeSeriesResponse';
@@ -14,7 +15,11 @@ import {WidgetCardDataLoader} from 'sentry/views/dashboards/widgetCard/widgetCar
 import {TimeSeriesWidgetVisualization} from 'sentry/views/dashboards/widgets/timeSeriesWidget/timeSeriesWidgetVisualization';
 import {SpanFields} from 'sentry/views/insights/types';
 
+jest.mock('sentry/actionCreators/modal');
 jest.mock('sentry/views/dashboards/widgetCard/widgetCardDataLoader');
+jest.mock('sentry/components/droppedData/drawer/useDroppedDataDrawer', () => ({
+  useDroppedDataDrawer: () => jest.fn(),
+}));
 jest.mock(
   'sentry/views/dashboards/widgets/timeSeriesWidget/timeSeriesWidgetVisualization',
   () => ({
@@ -389,4 +394,52 @@ describe('VisualizationWidget threshold time windows', () => {
       expect(screen.getByTestId('threshold-values')).toHaveTextContent('600, 1200');
     }
   );
+});
+
+describe('VisualizationWidget dropped-data heatmap', () => {
+  const orgWithFlag = () =>
+    OrganizationFixture({features: ['dashboards-data-fidelity-annotations']});
+
+  beforeEach(() => {
+    MockApiClient.addMockResponse({
+      url: '/organizations/org-slug/events-dropped/',
+      body: {droppedEvents: [], acceptedEvents: [], meta: {}},
+    });
+  });
+
+  function lastDroppedDataProp() {
+    const calls = jest.mocked(TimeSeriesWidgetVisualization).mock.calls;
+    return (calls[calls.length - 1]![0] as any).droppedData;
+  }
+
+  it('hides the heatmap while editing a widget (disableFullscreen)', async () => {
+    render(
+      <VisualizationWidget
+        widget={spansBreakdownWidget}
+        selection={selection}
+        disableFullscreen
+      />,
+      {organization: orgWithFlag()}
+    );
+
+    await waitFor(() => expect(TimeSeriesWidgetVisualization).toHaveBeenCalled());
+    expect(lastDroppedDataProp()).toBeUndefined();
+  });
+
+  it('dismisses the fullscreen widget when the flyout opens', async () => {
+    render(
+      <VisualizationWidget
+        widget={spansBreakdownWidget}
+        selection={selection}
+        isFullScreen
+      />,
+      {organization: orgWithFlag()}
+    );
+
+    await waitFor(() => expect(lastDroppedDataProp()).toBeDefined());
+
+    lastDroppedDataProp().onClick();
+
+    expect(closeModal).toHaveBeenCalled();
+  });
 });

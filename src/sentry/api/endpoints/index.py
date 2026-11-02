@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from sentry.api.api_publish_status import ApiPublishStatus
 from sentry.api.base import Endpoint, control_silo_endpoint
 from sentry.api.serializers import serialize
-from sentry.auth.principal import require_user
+from sentry.auth.principal import has_user
 from sentry.users.models.user import User
 
 
@@ -16,8 +16,8 @@ class IndexEndpoint(Endpoint):
     permission_classes = ()
 
     def get(self, request: Request) -> Response:
-        if request.user.is_authenticated:
-            user = User.objects.get(id=require_user(request).id)
+        if has_user(request.user):
+            user = User.objects.get(id=request.user.id)
             user = serialize(user, user)
         else:
             user = None

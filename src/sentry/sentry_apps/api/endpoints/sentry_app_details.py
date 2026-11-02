@@ -27,7 +27,7 @@ from sentry.apidocs.response_types import (
     as_validation_errors,
 )
 from sentry.apidocs.utils import inline_sentry_response_serializer
-from sentry.auth.principal import acting_user_id
+from sentry.auth.principal import acting_user_id, require_user
 from sentry.auth.staff import is_active_staff
 from sentry.constants import SentryAppStatus
 from sentry.deletions.models.scheduleddeletion import ScheduledDeletion
@@ -46,8 +46,6 @@ from sentry.sentry_apps.logic import SentryAppUpdater
 from sentry.sentry_apps.models.sentry_app import SentryApp
 from sentry.sentry_apps.models.sentry_app_installation import SentryAppInstallation
 from sentry.sentry_apps.utils.webhooks import has_error_events
-from sentry.users.models.user import User
-from sentry.users.services.user.model import RpcUser
 from sentry.utils.audit import create_audit_entry
 
 logger = logging.getLogger(__name__)
@@ -173,7 +171,7 @@ class SentryAppDetailsEndpoint(SentryAppBaseEndpoint):
         if serializer.is_valid():
             result = serializer.validated_data
 
-            assert isinstance(request.user, (User, RpcUser)), (
+            assert request.user.is_authenticated, (
                 "User must be authenticated to update a Sentry App"
             )
             updated_app = SentryAppUpdater(
@@ -255,11 +253,11 @@ class SentryAppDetailsEndpoint(SentryAppBaseEndpoint):
                 for install in sentry_app.installations.all():
                     try:
                         with transaction.atomic(using=router.db_for_write(SentryAppInstallation)):
-                            assert request.user.is_authenticated, (
-                                "User must be authenticated to delete installation"
-                            )
+                            # The uninstall webhook names the acting user.
                             SentryAppInstallationNotifier(
-                                sentry_app_installation=install, user=request.user, action="deleted"
+                                sentry_app_installation=install,
+                                user=require_user(request),
+                                action="deleted",
                             ).run()
                     except RequestException as exc:
                         sentry_sdk.capture_exception(exc)
@@ -278,7 +276,7 @@ class SentryAppDetailsEndpoint(SentryAppBaseEndpoint):
             if request.user.is_authenticated:
                 analytics.record(
                     SentryAppDeletedEvent(
-                        user_id=request.user.id,
+                        user_id=acting_user_id(request.user),
                         organization_id=sentry_app.owner_id,
                         sentry_app=sentry_app.slug,
                     )

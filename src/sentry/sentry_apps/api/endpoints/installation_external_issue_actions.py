@@ -62,6 +62,8 @@ class SentryAppInstallationExternalIssueActionsEndpoint(
     SentryAppInstallationExternalIssueBaseEndpoint
 ):
     owner = ApiOwner.INTEGRATION_PLATFORM
+    # The app's request names the acting user.
+    requires_user = True
     publish_status = {
         "POST": ApiPublishStatus.PUBLIC_EXPERIMENTAL,
     }

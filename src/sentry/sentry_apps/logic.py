@@ -19,6 +19,7 @@ from sentry.analytics.events.internal_integration_created import InternalIntegra
 from sentry.analytics.events.sentry_app_created import SentryAppCreatedEvent
 from sentry.analytics.events.sentry_app_updated import SentryAppUpdatedEvent
 from sentry.api.helpers.slugs import sentry_slugify
+from sentry.auth.principal import acting_user_id
 from sentry.auth.staff import has_staff_option
 from sentry.constants import SentryAppStatus
 from sentry.db.postgres.transactions import in_test_hide_transaction_boundary
@@ -357,7 +358,7 @@ class SentryAppUpdater:
         created_alert_rule_ui_component = "alert-rule-action" in (new_schema_elements or set())
         analytics.record(
             SentryAppUpdatedEvent(
-                user_id=user.id,
+                user_id=acting_user_id(user),
                 organization_id=self.sentry_app.owner_id,
                 sentry_app=self.sentry_app.slug,
                 created_alert_rule_ui_component=created_alert_rule_ui_component,

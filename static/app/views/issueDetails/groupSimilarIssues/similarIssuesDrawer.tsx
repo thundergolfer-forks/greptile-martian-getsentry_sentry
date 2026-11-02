@@ -1,10 +1,9 @@
+import {DrawerHeader} from '@sentry/scraps/drawer';
+
 import {
   DrawerBreadcrumbs,
   EventDrawerBody,
   EventDrawerContainer,
-  EventDrawerHeader,
-  EventNavigator,
-  Header,
 } from 'sentry/components/events/eventDrawer';
 import {t} from 'sentry/locale';
 import {GroupSimilarIssues} from 'sentry/views/issueDetails/groupSimilarIssues/similarIssues';
@@ -12,16 +11,13 @@ import {GroupSimilarIssues} from 'sentry/views/issueDetails/groupSimilarIssues/s
 export function SimilarIssuesDrawer() {
   return (
     <EventDrawerContainer>
-      <EventDrawerHeader>
+      <DrawerHeader>
         <DrawerBreadcrumbs
           current={{
             label: t('Similar Issues'),
           }}
         />
-      </EventDrawerHeader>
-      <EventNavigator>
-        <Header>{t('Similar Issues')}</Header>
-      </EventNavigator>
+      </DrawerHeader>
       <EventDrawerBody>
         <GroupSimilarIssues />
       </EventDrawerBody>

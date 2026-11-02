@@ -58,10 +58,7 @@ describe('FeatureFlagDrawer', () => {
       await screen.findByText(`Event ID: ${event.id.slice(0, 8)}`)
     ).toBeInTheDocument();
 
-    // Header & Controls
-    expect(
-      within(drawerScreen).getByText('Feature Flags', {selector: 'h3'})
-    ).toBeInTheDocument();
+    // Controls
     expect(
       within(drawerScreen).getByRole('textbox', {name: 'Search Flags'})
     ).toBeInTheDocument();

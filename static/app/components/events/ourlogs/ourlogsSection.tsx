@@ -188,7 +188,7 @@ function OurlogsSectionContent({
             >
               <OurlogsDrawer
                 event={event}
-                project={project}
+
                 embeddedOptions={
                   expandedLogId ? {openWithExpandedIds: [expandedLogId]} : undefined
                 }

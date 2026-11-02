@@ -1193,7 +1193,7 @@ describe('ActivitySection', () => {
 
     render(
       <GroupIdProvider groupId={updatedActivityGroup.id}>
-        <ActivityDrawer project={project} />
+        <ActivityDrawer />
       </GroupIdProvider>,
       {
         initialRouterConfig: {
@@ -1273,7 +1273,7 @@ describe('ActivitySection', () => {
 
     render(
       <GroupIdProvider groupId={updatedActivityGroup.id}>
-        <ActivityDrawer project={project} />
+        <ActivityDrawer />
       </GroupIdProvider>,
       {
         initialRouterConfig: {

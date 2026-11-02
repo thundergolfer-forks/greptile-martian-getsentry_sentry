@@ -1,6 +1,5 @@
 import {useMemo} from 'react';
 
-import {ProjectAvatar} from '@sentry/scraps/avatar';
 import {LinkButton} from '@sentry/scraps/button';
 import {Flex, Stack} from '@sentry/scraps/layout';
 
@@ -15,7 +14,6 @@ import {useEventLogsUrl} from 'sentry/components/events/ourlogs/useEventLogsUrl'
 import {SearchQueryBuilderProvider} from 'sentry/components/searchQueryBuilder/context';
 import {t} from 'sentry/locale';
 import type {Event} from 'sentry/types/event';
-import type {Project} from 'sentry/types/project';
 import {LogsAnalyticsPageSource} from 'sentry/utils/analytics/logsAnalyticsEvent';
 import {getShortEventId} from 'sentry/utils/events';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -33,7 +31,6 @@ import {TraceItemDataset} from 'sentry/views/explore/types';
 
 interface LogIssueDrawerProps {
   event: Event;
-  project: Project;
   additionalData?: {
     event?: Event;
     scrollToDisabled?: boolean;
@@ -45,7 +42,6 @@ interface LogIssueDrawerProps {
 
 export function OurlogsDrawer({
   event,
-  project,
   embeddedOptions,
   additionalData: propAdditionalData,
 }: LogIssueDrawerProps) {
@@ -99,7 +95,6 @@ export function OurlogsDrawer({
             current={{
               label: t('Logs'),
               labelTooltip: t('Event ID: %s', getShortEventId(event.id)),
-              leadingGraphic: <ProjectAvatar project={project} size={16} />,
             }}
           />
         </EventDrawerHeader>

@@ -61,6 +61,7 @@ export function EventFeatureFlagDrawer({
           setSearch(e.target.value.toLowerCase());
         }}
         aria-label={t('Search Flags')}
+        placeholder={t('Filter feature flags')}
         {...getFocusProps(FlagControlOptions.SEARCH)}
       />
       <InputGroup.TrailingItems disablePointerEvents>

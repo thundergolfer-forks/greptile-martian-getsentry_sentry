@@ -106,6 +106,7 @@ export function BreadcrumbsDrawer({
           });
         }}
         aria-label={t('Search All Breadcrumbs')}
+        placeholder={t('Filter breadcrumbs')}
         {...getFocusProps(BreadcrumbControlOptions.SEARCH)}
       />
       <InputGroup.TrailingItems disablePointerEvents>

@@ -57,6 +57,7 @@ export function TagsDistributionDrawer({
           leadingItems={
             <GroupDistributionsSearchInput
               includeFeatureFlagsTab={includeFeatureFlagsTab}
+              placeholder={t('Filter tags')}
               search={search}
               onChange={value => {
                 setSearch(value);

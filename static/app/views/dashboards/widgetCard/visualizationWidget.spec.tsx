@@ -6,7 +6,6 @@ import {render, screen, userEvent, waitFor} from 'sentry-test/reactTestingLibrar
 
 import {Button} from '@sentry/scraps/button';
 
-import {closeModal} from 'sentry/actionCreators/modal';
 import {PageFiltersStore} from 'sentry/components/pageFilters/store';
 import {DisplayType, WidgetType} from 'sentry/views/dashboards/types';
 import type {WidgetTimeSeries} from 'sentry/views/dashboards/utils/transformTimeSeriesResponse';
@@ -15,11 +14,7 @@ import {WidgetCardDataLoader} from 'sentry/views/dashboards/widgetCard/widgetCar
 import {TimeSeriesWidgetVisualization} from 'sentry/views/dashboards/widgets/timeSeriesWidget/timeSeriesWidgetVisualization';
 import {SpanFields} from 'sentry/views/insights/types';
 
-jest.mock('sentry/actionCreators/modal');
 jest.mock('sentry/views/dashboards/widgetCard/widgetCardDataLoader');
-jest.mock('sentry/components/droppedData/drawer/useDroppedDataDrawer', () => ({
-  useDroppedDataDrawer: () => jest.fn(),
-}));
 jest.mock(
   'sentry/views/dashboards/widgets/timeSeriesWidget/timeSeriesWidgetVisualization',
   () => ({
@@ -424,22 +419,5 @@ describe('VisualizationWidget dropped-data heatmap', () => {
 
     await waitFor(() => expect(TimeSeriesWidgetVisualization).toHaveBeenCalled());
     expect(lastDroppedDataProp()).toBeUndefined();
-  });
-
-  it('dismisses the fullscreen widget when the flyout opens', async () => {
-    render(
-      <VisualizationWidget
-        widget={spansBreakdownWidget}
-        selection={selection}
-        isFullScreen
-      />,
-      {organization: orgWithFlag()}
-    );
-
-    await waitFor(() => expect(lastDroppedDataProp()).toBeDefined());
-
-    lastDroppedDataProp().onClick();
-
-    expect(closeModal).toHaveBeenCalled();
   });
 });

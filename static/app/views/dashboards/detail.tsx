@@ -316,6 +316,11 @@ class DashboardDetail extends Component<Props, State> {
         this.closeFullScreenView();
         return;
       }
+      // Same for the dropped-data drawer: opening it closes the full-screen widget.
+      if (location.query.droppedData === 'true') {
+        this.closeFullScreenView();
+        return;
+      }
       const widget = (modifiedDashboard ?? dashboard).widgets[Number(widgetId)];
       if (widget) {
         openWidgetViewerModal({

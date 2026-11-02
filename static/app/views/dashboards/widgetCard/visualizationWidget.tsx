@@ -8,7 +8,6 @@ import {Container, Flex, Stack, type ContainerProps} from '@sentry/scraps/layout
 import {Text} from '@sentry/scraps/text';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
-import {closeModal} from 'sentry/actionCreators/modal';
 import {useDroppedDataDrawer} from 'sentry/components/droppedData/drawer/useDroppedDataDrawer';
 import type {DroppedDataProps} from 'sentry/components/droppedData/types';
 import {useDroppedData} from 'sentry/components/droppedData/useDroppedData';
@@ -295,13 +294,7 @@ function VisualizationWidgetContent({
         dataset: droppedDataDataset,
         droppedEvents,
         acceptedEvents,
-        // The flyout can't layer over the fullscreen widget modal, so close it first.
-        onClick: () => {
-          if (isFullScreen) {
-            closeModal();
-          }
-          openDroppedDataDrawer();
-        },
+        onClick: openDroppedDataDrawer,
       }
     : undefined;
 

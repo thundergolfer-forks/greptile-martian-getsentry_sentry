@@ -268,9 +268,6 @@ function VisualizationWidgetContent({
   const droppedDataEnabled =
     !disableFullscreen &&
     organization.features.includes('dashboards-data-fidelity-annotations');
-  // ponytail: reuses the page-filter-scoped hook as-is. The band therefore
-  // reflects page filters, not this widget's own projects/query — see DAIN-1964
-  // task #1 (parameterize useDroppedData for per-widget scope) before GA.
   const droppedDataDataset =
     droppedDataEnabled && widget.widgetType
       ? WIDGET_TYPE_TO_DROPPED_DATA_DATASET[widget.widgetType]

@@ -5,19 +5,16 @@ import {LinkButton} from '@sentry/scraps/button';
 import {Flex, Stack} from '@sentry/scraps/layout';
 
 import {
-  CrumbContainer,
+  DrawerBreadcrumbs,
   EventDrawerBody,
   EventDrawerContainer,
   EventDrawerHeader,
   EventNavigator,
-  NavigationCrumbs,
-  ShortId,
 } from 'sentry/components/events/eventDrawer';
 import {useEventLogsUrl} from 'sentry/components/events/ourlogs/useEventLogsUrl';
 import {SearchQueryBuilderProvider} from 'sentry/components/searchQueryBuilder/context';
 import {t} from 'sentry/locale';
 import type {Event} from 'sentry/types/event';
-import type {Group} from 'sentry/types/group';
 import type {Project} from 'sentry/types/project';
 import {LogsAnalyticsPageSource} from 'sentry/utils/analytics/logsAnalyticsEvent';
 import {getShortEventId} from 'sentry/utils/events';
@@ -36,7 +33,6 @@ import {TraceItemDataset} from 'sentry/views/explore/types';
 
 interface LogIssueDrawerProps {
   event: Event;
-  group: Group;
   project: Project;
   additionalData?: {
     event?: Event;
@@ -50,7 +46,6 @@ interface LogIssueDrawerProps {
 export function OurlogsDrawer({
   event,
   project,
-  group,
   embeddedOptions,
   additionalData: propAdditionalData,
 }: LogIssueDrawerProps) {
@@ -100,19 +95,12 @@ export function OurlogsDrawer({
     <SearchQueryBuilderProvider {...searchQueryBuilderProps}>
       <EventDrawerContainer>
         <EventDrawerHeader>
-          <NavigationCrumbs
-            crumbs={[
-              {
-                label: (
-                  <CrumbContainer>
-                    <ProjectAvatar project={project} />
-                    <ShortId>{group.shortId}</ShortId>
-                  </CrumbContainer>
-                ),
-              },
-              {label: getShortEventId(event.id)},
-              {label: t('Logs')},
-            ]}
+          <DrawerBreadcrumbs
+            current={{
+              label: t('Logs'),
+              labelTooltip: t('Event ID: %s', getShortEventId(event.id)),
+              leadingGraphic: <ProjectAvatar project={project} size={16} />,
+            }}
           />
         </EventDrawerHeader>
         <EventNavigator>

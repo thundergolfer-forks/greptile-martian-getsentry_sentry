@@ -112,12 +112,7 @@ export function OurlogsSection({
         freeze={freeze}
       >
         <LogsPageDataProvider disabled={false} staleTime={EXPLORE_FIVE_MIN_STALE_TIME}>
-          <OurlogsSectionContent
-            event={event}
-            group={group}
-            project={project}
-            freeze={freeze}
-          />
+          <OurlogsSectionContent event={event} project={project} freeze={freeze} />
         </LogsPageDataProvider>
       </LogsQueryParamsProvider>
     </LazyRender>
@@ -127,12 +122,10 @@ export function OurlogsSection({
 function OurlogsSectionContent({
   event,
   project,
-  group,
   freeze,
 }: {
   event: Event;
   freeze: LogsFrozenContextProviderProps;
-  group: Group;
   project: Project;
 }) {
   const organization = useOrganization();
@@ -194,7 +187,6 @@ function OurlogsSectionContent({
               staleTime={EXPLORE_FIVE_MIN_STALE_TIME}
             >
               <OurlogsDrawer
-                group={group}
                 event={event}
                 project={project}
                 embeddedOptions={
@@ -232,7 +224,7 @@ function OurlogsSectionContent({
       );
     }
     // oxlint-disable-next-line react/exhaustive-effect-dependencies
-  }, [location.query, freeze, group, event, project, openDrawer, navigate, location]);
+  }, [location.query, freeze, event, project, openDrawer, navigate, location]);
   if (!feature) {
     return null;
   }

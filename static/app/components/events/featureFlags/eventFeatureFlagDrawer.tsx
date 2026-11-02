@@ -6,15 +6,13 @@ import {InputGroup} from '@sentry/scraps/input';
 import {Grid} from '@sentry/scraps/layout';
 
 import {
-  CrumbContainer,
+  DrawerBreadcrumbs,
   EventDrawerBody,
   EventDrawerContainer,
   EventDrawerHeader,
   EventNavigator,
   Header,
-  NavigationCrumbs,
   SearchInput,
-  ShortId,
 } from 'sentry/components/events/eventDrawer';
 import {FeatureFlagSort} from 'sentry/components/events/featureFlags/featureFlagSort';
 import {
@@ -31,7 +29,6 @@ import {
 } from 'sentry/components/tables/keyValueTable';
 import {t} from 'sentry/locale';
 import type {Event} from 'sentry/types/event';
-import type {Group} from 'sentry/types/group';
 import type {Project} from 'sentry/types/project';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {getShortEventId} from 'sentry/utils/events';
@@ -39,7 +36,6 @@ import {useOrganization} from 'sentry/utils/useOrganization';
 
 interface FlagDrawerProps {
   event: Event;
-  group: Group;
   hydratedFlags: KeyValueTableDataRowProps[];
   initialOrderBy: OrderBy;
   project: Project;
@@ -47,7 +43,6 @@ interface FlagDrawerProps {
 }
 
 export function EventFeatureFlagDrawer({
-  group,
   event,
   project,
   initialOrderBy,
@@ -96,19 +91,12 @@ export function EventFeatureFlagDrawer({
   return (
     <EventDrawerContainer>
       <EventDrawerHeader>
-        <NavigationCrumbs
-          crumbs={[
-            {
-              label: (
-                <CrumbContainer>
-                  <ProjectAvatar project={project} />
-                  <ShortId>{group.shortId}</ShortId>
-                </CrumbContainer>
-              ),
-            },
-            {label: getShortEventId(event.id)},
-            {label: t('Feature Flags')},
-          ]}
+        <DrawerBreadcrumbs
+          current={{
+            label: t('Feature Flags'),
+            labelTooltip: t('Event ID: %s', getShortEventId(event.id)),
+            leadingGraphic: <ProjectAvatar project={project} size={16} />,
+          }}
         />
       </EventDrawerHeader>
       <EventNavigator>

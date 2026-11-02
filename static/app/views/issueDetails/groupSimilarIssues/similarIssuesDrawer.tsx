@@ -1,36 +1,26 @@
 import {ProjectAvatar} from '@sentry/scraps/avatar';
 
 import {
-  CrumbContainer,
+  DrawerBreadcrumbs,
   EventDrawerBody,
   EventDrawerContainer,
   EventDrawerHeader,
   EventNavigator,
   Header,
-  NavigationCrumbs,
-  ShortId,
 } from 'sentry/components/events/eventDrawer';
 import {t} from 'sentry/locale';
-import type {Group} from 'sentry/types/group';
 import type {Project} from 'sentry/types/project';
 import {GroupSimilarIssues} from 'sentry/views/issueDetails/groupSimilarIssues/similarIssues';
 
-export function SimilarIssuesDrawer({group, project}: {group: Group; project: Project}) {
+export function SimilarIssuesDrawer({project}: {project: Project}) {
   return (
     <EventDrawerContainer>
       <EventDrawerHeader>
-        <NavigationCrumbs
-          crumbs={[
-            {
-              label: (
-                <CrumbContainer>
-                  <ProjectAvatar project={project} />
-                  <ShortId>{group.shortId}</ShortId>
-                </CrumbContainer>
-              ),
-            },
-            {label: t('Similar Issues')},
-          ]}
+        <DrawerBreadcrumbs
+          current={{
+            label: t('Similar Issues'),
+            leadingGraphic: <ProjectAvatar project={project} size={16} />,
+          }}
         />
       </EventDrawerHeader>
       <EventNavigator>

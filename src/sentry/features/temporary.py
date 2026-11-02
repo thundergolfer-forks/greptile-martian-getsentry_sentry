@@ -239,6 +239,8 @@ def register_temporary_features(manager: FeatureManager) -> None:
     manager.add("organizations:preprod-size-monitors-frontend", OrganizationFeature, FeatureHandlerStrategy.FLAGPOLE, api_expose=True)
     # Enable duplicating monitors from their details page
     manager.add("organizations:monitor-duplication", OrganizationFeature, FeatureHandlerStrategy.FLAGPOLE, api_expose=True)
+    # Enables the Heroku log drain endpoint in relay
+    manager.add("organizations:relay-heroku-log-drain-endpoint", OrganizationFeature, FeatureHandlerStrategy.FLAGPOLE, api_expose=False)
     # Enables the playstation ingestion in relay
     manager.add("organizations:relay-playstation-ingestion", OrganizationFeature, FeatureHandlerStrategy.INTERNAL, api_expose=False)
     # Enable granular permission scopes (e.g. dashboard:read/write) on API endpoints.
@@ -362,6 +364,8 @@ def register_temporary_features(manager: FeatureManager) -> None:
     manager.add("organizations:seer-cursor-origin-support", OrganizationFeature, FeatureHandlerStrategy.FLAGPOLE, api_expose=True)
     # Seer onboarding changes for token-based billing
     manager.add("organizations:seer-token-based-billing-onboarding", OrganizationFeature, FeatureHandlerStrategy.FLAGPOLE, api_expose=True)
+    # Check Seer credits before running billable Seer operations under token-based billing
+    manager.add("organizations:seer-credit-checks", OrganizationFeature, FeatureHandlerStrategy.FLAGPOLE, api_expose=True)
     # Enable Seer XRay Mode, the overlay that highlights LLM-context-registered DOM nodes
     manager.add("organizations:seer-xray", OrganizationFeature, FeatureHandlerStrategy.FLAGPOLE, api_expose=True)
     # Enable the service account APIs (currently mocked)

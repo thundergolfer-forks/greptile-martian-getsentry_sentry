@@ -1164,12 +1164,18 @@ importers:
       '@react-aria/disclosure':
         specifier: 3.2.1
         version: 3.2.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@react-aria/focus':
+        specifier: 3.22.1
+        version: 3.22.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@react-aria/i18n':
         specifier: 3.13.1
         version: 3.13.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@react-aria/interactions':
         specifier: 3.28.1
         version: 3.28.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@react-aria/menu':
+        specifier: 3.22.1
+        version: 3.22.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@react-aria/numberfield':
         specifier: 3.13.1
         version: 3.13.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1179,6 +1185,9 @@ importers:
       '@react-aria/radio':
         specifier: 3.13.1
         version: 3.13.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@react-aria/separator':
+        specifier: 3.5.1
+        version: 3.5.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@react-aria/slider':
         specifier: 3.9.1
         version: 3.9.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1209,6 +1218,9 @@ importers:
       '@react-stately/slider':
         specifier: 3.8.1
         version: 3.8.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@react-stately/tree':
+        specifier: 3.10.1
+        version: 3.10.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@react-types/shared':
         specifier: 3.36.0
         version: 3.36.0(react@19.3.0)

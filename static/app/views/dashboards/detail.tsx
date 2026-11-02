@@ -317,7 +317,8 @@ class DashboardDetail extends Component<Props, State> {
         return;
       }
       // Same for the dropped-data drawer: opening it closes the full-screen widget.
-      if (location.query.droppedData === 'true') {
+      // The param value is the dataset, so any value means a drawer was opened.
+      if (defined(location.query.droppedData)) {
         this.closeFullScreenView();
         return;
       }

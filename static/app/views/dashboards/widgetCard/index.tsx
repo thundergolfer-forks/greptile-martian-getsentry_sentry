@@ -417,6 +417,7 @@ function WidgetCard(props: Props) {
               showConfidenceWarning={showConfidenceWarning}
               legendSelection={legendSelectionForWidget}
               onLegendSelectionChange={handleLegendSelectionChange}
+              disableFullscreen={disableFullscreen}
             />
           </WidgetFrame>
         </VisuallyCompleteWithData>

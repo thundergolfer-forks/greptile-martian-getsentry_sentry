@@ -43,6 +43,7 @@ interface UseDroppedDataParams {
 
 interface UseDroppedDataQueryOptions {
   enabled?: boolean;
+  featureFlag?: string;
 }
 
 /**
@@ -50,12 +51,13 @@ interface UseDroppedDataQueryOptions {
  */
 export function useDroppedData(
   {dataset, interval}: UseDroppedDataParams,
-  {enabled = true}: UseDroppedDataQueryOptions = {}
+  {
+    enabled = true,
+    featureFlag = 'explore-data-fidelity-annotations',
+  }: UseDroppedDataQueryOptions = {}
 ) {
   const organization = useOrganization();
-  const droppedDataEnabled = organization.features.includes(
-    'explore-data-fidelity-annotations'
-  );
+  const droppedDataEnabled = organization.features.includes(featureFlag);
   const {isReady: arePageFiltersReady, selection} = usePageFilters();
 
   // Keep in sync with useSortedTimeSeries so the band refetches with the chart

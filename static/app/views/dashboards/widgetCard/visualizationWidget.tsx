@@ -8,12 +8,17 @@ import {Container, Flex, Stack, type ContainerProps} from '@sentry/scraps/layout
 import {Text} from '@sentry/scraps/text';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
+import {closeModal} from 'sentry/actionCreators/modal';
+import {useDroppedDataDrawer} from 'sentry/components/droppedData/drawer/useDroppedDataDrawer';
+import type {DroppedDataProps} from 'sentry/components/droppedData/types';
+import {useDroppedData} from 'sentry/components/droppedData/useDroppedData';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
 import type {PageFilters} from 'sentry/types/core';
 import type {EChartDataZoomHandler} from 'sentry/types/echarts';
 import type {Confidence} from 'sentry/types/organization';
 import {defined} from 'sentry/utils/defined';
 import type {TableDataWithTitle} from 'sentry/utils/discover/discoverQuery';
+import {DiscoverDatasets} from 'sentry/utils/discover/types';
 import type {IngestionMeta} from 'sentry/utils/timeSeries/useFetchEventsTimeSeries';
 import {MutableSearch} from 'sentry/utils/tokenizeSearch';
 import {useLocation} from 'sentry/utils/useLocation';
@@ -71,6 +76,7 @@ interface VisualizationWidgetProps {
   selection: PageFilters;
   widget: TWidget;
   dashboardFilters?: DashboardFilters;
+  disableFullscreen?: boolean;
   isFullScreen?: boolean;
   legendSelection?: LegendSelection;
   onDataFetchStart?: () => void;
@@ -99,6 +105,7 @@ function VisualizationWidgetComponent({
   legendSelection,
   onLegendSelectionChange,
   isFullScreen,
+  disableFullscreen,
 }: VisualizationWidgetProps) {
   const onWidgetError = useWidgetErrorCallback();
 
@@ -170,6 +177,7 @@ function VisualizationWidgetComponent({
             legendSelection={decodedLegendSelection}
             onLegendSelectionChange={handleLegendSelectionChange}
             isFullScreen={isFullScreen}
+            disableFullscreen={disableFullscreen}
             widgetInterval={timeseriesInterval ?? widgetInterval}
           />
         );
@@ -177,6 +185,17 @@ function VisualizationWidgetComponent({
     </WidgetCardDataLoader>
   );
 }
+
+// Only these widget datasets map to an Outcomes category on the backend
+// (DATASET_TO_CATEGORY in data_annotations.py). Everything else gets no band.
+const WIDGET_TYPE_TO_DROPPED_DATA_DATASET: Partial<Record<WidgetType, DiscoverDatasets>> =
+  {
+    [WidgetType.SPANS]: DiscoverDatasets.SPANS,
+    [WidgetType.LOGS]: DiscoverDatasets.OURLOGS,
+    [WidgetType.TRACEMETRICS]: DiscoverDatasets.TRACEMETRICS,
+    [WidgetType.ERRORS]: DiscoverDatasets.ERRORS,
+    [WidgetType.DISCOVER]: DiscoverDatasets.ERRORS,
+  };
 
 function shouldMemoizeVisualizationWidget(
   prevProps: VisualizationWidgetProps,
@@ -205,6 +224,7 @@ interface VisualizationWidgetContentProps {
   confidence?: Confidence;
   dashboardFilters?: DashboardFilters;
   dataScanned?: 'full' | 'partial';
+  disableFullscreen?: boolean;
   errorMessage?: string;
   ingestion?: IngestionMeta;
   isFullScreen?: boolean;
@@ -237,12 +257,53 @@ function VisualizationWidgetContent({
   legendSelection,
   onLegendSelectionChange,
   isFullScreen,
+  disableFullscreen,
   widgetInterval,
 }: VisualizationWidgetContentProps) {
   const theme = useTheme();
   const organization = useOrganization();
   const location = useLocation();
   const {selection} = usePageFilters();
+
+  // Hide the heatmap when editing a widget; disableFullscreen is true in edit mode.
+  const droppedDataEnabled =
+    !disableFullscreen &&
+    organization.features.includes('dashboards-data-fidelity-annotations');
+  // ponytail: reuses the page-filter-scoped hook as-is. The band therefore
+  // reflects page filters, not this widget's own projects/query — see DAIN-1964
+  // task #1 (parameterize useDroppedData for per-widget scope) before GA.
+  const droppedDataDataset =
+    droppedDataEnabled && widget.widgetType
+      ? WIDGET_TYPE_TO_DROPPED_DATA_DATASET[widget.widgetType]
+      : undefined;
+  const {droppedEvents, acceptedEvents} = useDroppedData(
+    {
+      dataset: droppedDataDataset ?? DiscoverDatasets.SPANS,
+      interval: widgetInterval ?? '',
+    },
+    {
+      enabled: defined(droppedDataDataset),
+      featureFlag: 'dashboards-data-fidelity-annotations',
+    }
+  );
+  const openDroppedDataDrawer = useDroppedDataDrawer(
+    {dataset: droppedDataDataset ?? DiscoverDatasets.SPANS, interval: widgetInterval},
+    {enabled: defined(droppedDataDataset)}
+  );
+  const droppedData: DroppedDataProps | undefined = defined(droppedDataDataset)
+    ? {
+        dataset: droppedDataDataset,
+        droppedEvents,
+        acceptedEvents,
+        // The flyout can't layer over the fullscreen widget modal, so close it first.
+        onClick: () => {
+          if (isFullScreen) {
+            closeModal();
+          }
+          openDroppedDataDrawer();
+        },
+      }
+    : undefined;
 
   const timeSeriesWithPlottable = timeseriesResults
     .map(({timeSeries, seriesName, queryIndex}) => {
@@ -478,6 +539,7 @@ function VisualizationWidgetContent({
             legendSelection={legendSelection}
             onLegendSelectionChange={onLegendSelectionChange}
             renderTooltipSeriesDetails={renderTooltipSeriesDetails}
+            droppedData={droppedData}
           />
         </Container>
         <Container {...timeseriesContainerPadding}>{confidenceFooter}</Container>
@@ -502,6 +564,7 @@ function VisualizationWidgetContent({
           legendSelection={legendSelection}
           onLegendSelectionChange={onLegendSelectionChange}
           renderTooltipSeriesDetails={renderTooltipSeriesDetails}
+          droppedData={droppedData}
         />
       </Container>
       <Container {...timeseriesContainerPadding}>{confidenceFooter}</Container>

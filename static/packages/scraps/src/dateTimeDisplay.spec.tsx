@@ -1,8 +1,19 @@
-import {render, screen} from 'sentry-test/reactTestingLibrary';
+import type * as React from 'react';
+import {render, screen} from '@testing-library/react';
 
+import {DateTime} from '@sentry/scraps/dateTime';
 import {type DateTimeContextValue, DateTimeProvider} from '@sentry/scraps/datetime';
 
-import {DateTime} from './dateTime';
+beforeEach(() => {
+  jest.useFakeTimers().setSystemTime(new Date('2017-10-17T02:41:20.000Z'));
+});
+afterEach(() => {
+  try {
+    jest.runOnlyPendingTimers();
+  } finally {
+    jest.useRealTimers();
+  }
+});
 
 describe('DateTime', () => {
   function renderPDT(

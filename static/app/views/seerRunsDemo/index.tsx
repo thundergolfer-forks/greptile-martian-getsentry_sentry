@@ -2,11 +2,11 @@ import {useCallback, useMemo} from 'react';
 import {useQuery} from '@tanstack/react-query';
 
 import {Container, Stack} from '@sentry/scraps/layout';
-import {Pagination} from '@sentry/scraps/pagination';
 import {COL_WIDTH_UNDEFINED} from '@sentry/scraps/table';
 import {Heading, Text} from '@sentry/scraps/text';
 
 import {LoadingError} from 'sentry/components/loadingError';
+import {Pagination} from 'sentry/components/pagination';
 import {SearchQueryBuilder} from 'sentry/components/searchQueryBuilder';
 import type {GetTagValues} from 'sentry/components/searchQueryBuilder';
 import {SeerMarkdown} from 'sentry/components/seer/markdown';

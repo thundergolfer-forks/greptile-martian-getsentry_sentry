@@ -11,8 +11,6 @@ import partition from 'lodash/partition';
 import {Button} from '@sentry/scraps/button';
 import {Stack, Container} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
-import type {CursorHandler} from '@sentry/scraps/pagination';
-import {Pagination} from '@sentry/scraps/pagination';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import ChartZoom from 'sentry/components/charts/chartZoom';
@@ -22,6 +20,8 @@ import {EmptyStateWarning} from 'sentry/components/emptyStateWarning';
 import {IdBadge} from 'sentry/components/idBadge';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
+import type {CursorHandler} from 'sentry/components/pagination';
+import {Pagination} from 'sentry/components/pagination';
 import {PerformanceDuration} from 'sentry/components/performanceDuration';
 import {TextOverflow} from 'sentry/components/textOverflow';
 import {t, tct} from 'sentry/locale';

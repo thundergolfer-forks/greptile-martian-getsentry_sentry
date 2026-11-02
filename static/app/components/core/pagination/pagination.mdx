@@ -4,7 +4,7 @@ description: Cursor-based pagination controls driven by an API response Link hea
 category: navigation
 source: '@sentry/scraps/pagination'
 resources:
-  js: https://github.com/getsentry/sentry/blob/master/static/app/components/core/pagination/pagination.tsx
+  js: https://github.com/getsentry/sentry/blob/master/static/packages/scraps/src/pagination/pagination.tsx
   a11y:
     WCAG 2.4.5: https://www.w3.org/TR/WCAG22/#multiple-ways
 ---
@@ -12,13 +12,29 @@ resources:
 import {useState} from 'react';
 
 import {Flex, Stack} from '@sentry/scraps/layout';
-import {Pagination} from '@sentry/scraps/pagination';
+import {Pagination} from 'sentry/components/pagination';
 
 import * as Storybook from 'sentry/stories';
 
-export const documentation = import('!!type-loader!@sentry/scraps/pagination/pagination');
+export const documentation = import('!!type-loader!sentry/components/pagination');
 
 The `Pagination` component renders Previous / Next controls driven by the [RFC 5988 `Link` header](https://www.rfc-editor.org/rfc/rfc5988) returned by Sentry's [paginated APIs](https://develop.sentry.dev/backend/api/design/#pagination). Pass the header string through the `pageLinks` prop and the component parses cursors and `results` flags to disable the appropriate side.
+
+## Standalone Controlled Pagination
+
+The portable component from `@sentry/scraps/pagination` accepts opaque cursors and availability. It does not parse API headers or require a router:
+
+```tsx
+import {Pagination} from '@sentry/scraps/pagination';
+
+<Pagination
+  previous={{cursor: 'previous-page'}}
+  next={{cursor: 'next-page'}}
+  onCursor={(cursor, delta) => setCursor(cursor)}
+/>;
+```
+
+Omit `previous` or `next` to disable that direction, or set its `disabled` property. Use the app adapter from `sentry/components/pagination` for Sentry Link headers and URL navigation. The examples below use the app adapter.
 
 ## Basic usage
 

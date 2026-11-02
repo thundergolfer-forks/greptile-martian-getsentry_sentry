@@ -5,7 +5,6 @@ import type {Location} from 'history';
 
 import {Alert} from '@sentry/scraps/alert';
 import {Grid, Stack} from '@sentry/scraps/layout';
-import {Pagination} from '@sentry/scraps/pagination';
 import {TabList, Tabs} from '@sentry/scraps/tabs';
 
 import {DocumentationHint} from 'sentry/components/documentationHint';
@@ -18,6 +17,7 @@ import {EnvironmentPageFilter} from 'sentry/components/pageFilters/environment/e
 import {PageFilterBar} from 'sentry/components/pageFilters/pageFilterBar';
 import {ProjectPageFilter} from 'sentry/components/pageFilters/project/projectPageFilter';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
+import {Pagination} from 'sentry/components/pagination';
 import {TransactionSearchQueryBuilder} from 'sentry/components/performance/transactionSearchQueryBuilder';
 import {ProfileEventsTable} from 'sentry/components/profiling/profileEventsTable';
 import {QuestionTooltip} from 'sentry/components/questionTooltip';

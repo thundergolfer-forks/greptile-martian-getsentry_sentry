@@ -4,14 +4,14 @@ import {UserAvatar} from '@sentry/scraps/avatar';
 import {Tag} from '@sentry/scraps/badge';
 import {Flex, Grid, Stack} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
-import type {CursorHandler} from '@sentry/scraps/pagination';
-import {Pagination} from '@sentry/scraps/pagination';
 import {Select} from '@sentry/scraps/select';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import {ActivityAvatar} from 'sentry/components/activity/item/avatar';
 import {DateTime} from 'sentry/components/dateTime';
+import type {CursorHandler} from 'sentry/components/pagination';
+import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {
   TimeRangeSelector,

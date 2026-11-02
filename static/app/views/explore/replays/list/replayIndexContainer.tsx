@@ -3,8 +3,7 @@ import styled from '@emotion/styled';
 import {useQuery} from '@tanstack/react-query';
 import {parseAsString, useQueryStates} from 'nuqs';
 
-import {Pagination} from '@sentry/scraps/pagination';
-
+import {Pagination} from 'sentry/components/pagination';
 import {useReplayTableSort} from 'sentry/components/replays/table/useReplayTableSort';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';

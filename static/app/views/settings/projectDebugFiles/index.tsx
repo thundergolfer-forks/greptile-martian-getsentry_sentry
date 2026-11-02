@@ -4,7 +4,6 @@ import {useQuery, useQueryClient, useMutation} from '@tanstack/react-query';
 
 import {Checkbox} from '@sentry/scraps/checkbox';
 import {Grid} from '@sentry/scraps/layout';
-import {Pagination} from '@sentry/scraps/pagination';
 
 import {
   addErrorMessage,
@@ -13,6 +12,7 @@ import {
 } from 'sentry/actionCreators/indicator';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
+import {Pagination} from 'sentry/components/pagination';
 import {SearchBar} from 'sentry/components/searchBar';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';

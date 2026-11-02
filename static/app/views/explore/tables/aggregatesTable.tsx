@@ -5,10 +5,10 @@ import {IconStack} from '@sentry/icons/stack';
 
 import {DropdownMenu, type MenuItemProps} from '@sentry/scraps/dropdownMenu';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
-import {Pagination, type CursorHandler} from '@sentry/scraps/pagination';
 
 import {normalizeDateTimeParams} from 'sentry/components/pageFilters/parse';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
+import {Pagination, type CursorHandler} from 'sentry/components/pagination';
 import {getNextDirection} from 'sentry/components/tables/getNextSort';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {t} from 'sentry/locale';

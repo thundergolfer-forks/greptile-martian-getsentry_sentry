@@ -10,7 +10,6 @@ import {DropdownMenu} from '@sentry/scraps/dropdownMenu';
 import {Container, Flex} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
-import {Pagination} from '@sentry/scraps/pagination';
 import {RevealOnHover} from '@sentry/scraps/revealOnHover';
 import {Text} from '@sentry/scraps/text';
 
@@ -22,6 +21,7 @@ import {openNavigateToExternalLinkModal} from 'sentry/actionCreators/modal';
 import {DeviceName} from 'sentry/components/deviceName';
 import {getContextIcon} from 'sentry/components/events/contexts/utils';
 import {extractSelectionParameters} from 'sentry/components/pageFilters/parse';
+import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {TimeSince} from 'sentry/components/timeSince';
 import {t, tct} from 'sentry/locale';

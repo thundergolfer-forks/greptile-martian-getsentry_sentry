@@ -11,13 +11,13 @@ import * as qs from 'query-string';
 
 import type {FeatureBadgeProps} from '@sentry/scraps/badge';
 import {Grid, Stack} from '@sentry/scraps/layout';
-import type {CursorHandler} from '@sentry/scraps/pagination';
 
 import {addMessage} from 'sentry/actionCreators/indicator';
 import * as Layout from 'sentry/components/layouts/thirds';
 import {DATE_TIME_KEYS} from 'sentry/components/pageFilters/constants';
 import {extractSelectionParameters} from 'sentry/components/pageFilters/parse';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
+import type {CursorHandler} from 'sentry/components/pagination';
 import {QueryCount} from 'sentry/components/queryCount';
 import {useAiQueryContext} from 'sentry/components/searchQueryBuilder/askSeerCombobox/aiQueryContext';
 import {trackAiQueryOutcome} from 'sentry/components/searchQueryBuilder/askSeerCombobox/utils';

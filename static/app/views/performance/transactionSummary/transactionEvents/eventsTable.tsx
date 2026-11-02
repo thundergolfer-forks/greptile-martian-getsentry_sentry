@@ -8,9 +8,9 @@ import groupBy from 'lodash/groupBy';
 
 import {LinkButton} from '@sentry/scraps/button';
 import {Link} from '@sentry/scraps/link';
-import {Pagination} from '@sentry/scraps/pagination';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
+import {Pagination} from 'sentry/components/pagination';
 import {QuestionTooltip} from 'sentry/components/questionTooltip';
 import {DataGrid} from 'sentry/components/tables/dataGrid';
 import {t, tct} from 'sentry/locale';

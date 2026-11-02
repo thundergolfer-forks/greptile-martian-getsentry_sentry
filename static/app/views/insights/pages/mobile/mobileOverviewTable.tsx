@@ -2,10 +2,10 @@ import {useTheme, type Theme} from '@emotion/react';
 import {IconStar} from '@sentry/icons/star';
 import type {Location} from 'history';
 
-import type {CursorHandler} from '@sentry/scraps/pagination';
-import {Pagination} from '@sentry/scraps/pagination';
 import {COL_WIDTH_UNDEFINED} from '@sentry/scraps/table';
 
+import type {CursorHandler} from 'sentry/components/pagination';
+import {Pagination} from 'sentry/components/pagination';
 import {ColumnLabel} from 'sentry/components/tables/columnLabel';
 import {DataGrid, type GridColumnHeader} from 'sentry/components/tables/dataGrid';
 import {useQueryBasedColumnResize} from 'sentry/components/tables/dataGrid/useQueryBasedColumnResize';

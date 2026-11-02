@@ -1,10 +1,15 @@
+import {ThemeProvider} from '@emotion/react';
+import {render as renderWithoutRouter} from '@testing-library/react'; // eslint-disable-line no-restricted-imports
+
 import {render, screen, userEvent} from 'sentry-test/reactTestingLibrary';
 
-import {Pagination, useGetPaginationCaption} from '@sentry/scraps/pagination';
+import {lightTheme} from '@sentry/scraps/theme';
 import {
   TranslationContextProvider,
   type TranslationContextValue,
 } from '@sentry/scraps/translation';
+
+import {Pagination, useGetPaginationCaption} from 'sentry/components/pagination';
 
 const testTranslation: TranslationContextValue = {
   t: string => string,
@@ -162,4 +167,15 @@ describe('useGetPaginationCaption', () => {
     });
     expect(container).toHaveTextContent('51-75 of 100');
   });
+});
+
+it('uses a custom cursor handler without a router', async () => {
+  const onCursor = jest.fn();
+  renderWithoutRouter(
+    <ThemeProvider theme={lightTheme}>
+      <Pagination pageLinks={pageLinks} onCursor={onCursor} />
+    </ThemeProvider>
+  );
+  await userEvent.click(screen.getByRole('button', {name: 'Next'}));
+  expect(onCursor).toHaveBeenCalledWith('0:25:0', '', {}, 1);
 });

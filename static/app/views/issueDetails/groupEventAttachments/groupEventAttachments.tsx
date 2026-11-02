@@ -3,11 +3,11 @@ import styled from '@emotion/styled';
 import {IconFilter} from '@sentry/icons/filter';
 
 import {Flex, Grid, Stack} from '@sentry/scraps/layout';
-import {Pagination} from '@sentry/scraps/pagination';
 
 import {EmptyStateWarning} from 'sentry/components/emptyStateWarning';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
+import {Pagination} from 'sentry/components/pagination';
 import {t} from 'sentry/locale';
 import type {Group, IssueAttachment} from 'sentry/types/group';
 import type {Project} from 'sentry/types/project';

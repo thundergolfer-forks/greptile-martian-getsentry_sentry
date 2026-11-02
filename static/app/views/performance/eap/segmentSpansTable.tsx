@@ -9,8 +9,8 @@ import {Button, LinkButton} from '@sentry/scraps/button';
 import {CompactSelect} from '@sentry/scraps/compactSelect';
 import {Flex, Grid} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
-import {Pagination, type CursorHandler} from '@sentry/scraps/pagination';
 
+import {Pagination, type CursorHandler} from 'sentry/components/pagination';
 import {ColumnLabel} from 'sentry/components/tables/columnLabel';
 import {DataGrid} from 'sentry/components/tables/dataGrid';
 import {t} from 'sentry/locale';

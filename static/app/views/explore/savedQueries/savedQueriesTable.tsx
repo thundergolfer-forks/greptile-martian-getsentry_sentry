@@ -4,7 +4,6 @@ import debounce from 'lodash/debounce';
 
 import {UserAvatar} from '@sentry/scraps/avatar';
 import {Container} from '@sentry/scraps/layout';
-import {Pagination, type CursorHandler} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
@@ -15,6 +14,7 @@ import {
 } from 'sentry/actionCreators/indicator';
 import {openSaveQueryModal} from 'sentry/actionCreators/modal';
 import {ActivityAvatar} from 'sentry/components/activity/item/avatar';
+import {Pagination, type CursorHandler} from 'sentry/components/pagination';
 import {SavedEntityTable} from 'sentry/components/savedEntityTable';
 import {t} from 'sentry/locale';
 import {trackAnalytics} from 'sentry/utils/analytics';

@@ -6,11 +6,11 @@ import {LinkButton} from '@sentry/scraps/button';
 import {CompactSelect} from '@sentry/scraps/compactSelect';
 import {Container, Grid} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
-import type {CursorHandler} from '@sentry/scraps/pagination';
-import {Pagination} from '@sentry/scraps/pagination';
 
 import {GuideAnchor} from 'sentry/components/assistant/guideAnchor';
 import {DiscoverButton} from 'sentry/components/discoverButton';
+import type {CursorHandler} from 'sentry/components/pagination';
+import {Pagination} from 'sentry/components/pagination';
 import {t} from 'sentry/locale';
 import type {Organization} from 'sentry/types/organization';
 import {DemoTourElement, DemoTourStep} from 'sentry/utils/demoMode/demoTours';

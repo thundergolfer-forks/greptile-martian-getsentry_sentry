@@ -2,11 +2,10 @@ import {PureComponent} from 'react';
 import styled from '@emotion/styled';
 import type {Location} from 'history';
 
-import type {CursorHandler} from '@sentry/scraps/pagination';
-import {Pagination} from '@sentry/scraps/pagination';
-
 import type {Client} from 'sentry/api';
 import {ErrorBoundary} from 'sentry/components/errorBoundary';
+import type {CursorHandler} from 'sentry/components/pagination';
+import {Pagination} from 'sentry/components/pagination';
 import {t} from 'sentry/locale';
 import type {Organization} from 'sentry/types/organization';
 import {trackAnalytics} from 'sentry/utils/analytics';

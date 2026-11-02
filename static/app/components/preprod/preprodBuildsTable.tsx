@@ -1,9 +1,9 @@
 import React, {Fragment, useMemo} from 'react';
 
 import {ExternalLink} from '@sentry/scraps/link';
-import {Pagination} from '@sentry/scraps/pagination';
 import {Text} from '@sentry/scraps/text';
 
+import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {t, tct} from 'sentry/locale';
 import {RequestError} from 'sentry/utils/requestError/requestError';

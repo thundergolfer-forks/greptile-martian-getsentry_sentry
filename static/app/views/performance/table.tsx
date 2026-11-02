@@ -5,12 +5,12 @@ import type {Location} from 'history';
 import {Flex} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
 import {useModal} from '@sentry/scraps/modal';
-import {Pagination} from '@sentry/scraps/pagination';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import {addSuccessMessage} from 'sentry/actionCreators/indicator';
 import {GuideAnchor} from 'sentry/components/assistant/guideAnchor';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
+import {Pagination} from 'sentry/components/pagination';
 import {ColumnLabel} from 'sentry/components/tables/columnLabel';
 import {DataGrid} from 'sentry/components/tables/dataGrid';
 import {t, tct} from 'sentry/locale';

@@ -1,8 +1,7 @@
 import styled from '@emotion/styled';
 
-import {Pagination} from '@sentry/scraps/pagination';
-
 import {EmptyStateWarning} from 'sentry/components/emptyStateWarning';
+import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {PanelBody} from 'sentry/components/panels/panelBody';
 import {t} from 'sentry/locale';

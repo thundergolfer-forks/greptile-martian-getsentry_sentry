@@ -8,11 +8,11 @@ import type {MenuItemProps} from '@sentry/scraps/dropdownMenu';
 import {DropdownMenu} from '@sentry/scraps/dropdownMenu';
 import {Grid} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
-import {Pagination} from '@sentry/scraps/pagination';
 
 import Feature from 'sentry/components/acl/feature';
 import {EmptyStateWarning} from 'sentry/components/emptyStateWarning';
 import {resetPageFilters} from 'sentry/components/pageFilters/actions';
+import {Pagination} from 'sentry/components/pagination';
 import {TimeSince} from 'sentry/components/timeSince';
 import {t, tct} from 'sentry/locale';
 import type {NewQuery, Organization, SavedQuery} from 'sentry/types/organization';

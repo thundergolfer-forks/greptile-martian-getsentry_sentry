@@ -1,8 +1,7 @@
 import {useCallback} from 'react';
 import {useQueryState} from 'nuqs';
 
-import type {CursorHandler} from '@sentry/scraps/pagination';
-
+import type {CursorHandler} from 'sentry/components/pagination';
 import {TableUrlParams} from 'sentry/views/insights/pages/agents/utils/urlParams';
 
 interface UseTableCursorResult {

@@ -2,10 +2,10 @@ import {Fragment} from 'react';
 import styled from '@emotion/styled';
 
 import {useResponsivePropValue} from '@sentry/scraps/layout';
-import type {CursorHandler} from '@sentry/scraps/pagination';
-import {Pagination} from '@sentry/scraps/pagination';
 import {HoverOverlayGroupProvider} from '@sentry/scraps/useHoverOverlay';
 
+import type {CursorHandler} from 'sentry/components/pagination';
+import {Pagination} from 'sentry/components/pagination';
 import {
   StreamGroupTable,
   useStreamGroupColumns,

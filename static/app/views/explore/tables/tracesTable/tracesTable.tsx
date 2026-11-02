@@ -4,13 +4,13 @@ import debounce from 'lodash/debounce';
 
 import {Button} from '@sentry/scraps/button';
 import {ExternalLink} from '@sentry/scraps/link';
-import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import {Count} from 'sentry/components/count';
 import {EmptyStateWarning} from 'sentry/components/emptyStateWarning';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
+import {Pagination} from 'sentry/components/pagination';
 import {PerformanceDuration} from 'sentry/components/performanceDuration';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {SPAN_PROPS_DOCS_URL} from 'sentry/constants';

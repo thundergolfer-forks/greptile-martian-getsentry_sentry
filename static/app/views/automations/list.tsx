@@ -4,10 +4,10 @@ import {useQuery} from '@tanstack/react-query';
 
 import {LinkButton} from '@sentry/scraps/button';
 import {Container, Flex, Grid} from '@sentry/scraps/layout';
-import {Pagination, useGetPaginationCaption} from '@sentry/scraps/pagination';
 
 import {PageFilterBar} from 'sentry/components/pageFilters/pageFilterBar';
 import {ProjectPageFilter} from 'sentry/components/pageFilters/project/projectPageFilter';
+import {Pagination, useGetPaginationCaption} from 'sentry/components/pagination';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {AlertsMonitorsShowcaseButton} from 'sentry/components/workflowEngine/alertsMonitorsShowcaseButton';
 import {WorkflowEngineListLayout as ListLayout} from 'sentry/components/workflowEngine/layout/list';

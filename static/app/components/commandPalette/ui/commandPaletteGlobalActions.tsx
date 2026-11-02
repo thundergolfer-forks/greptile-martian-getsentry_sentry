@@ -30,12 +30,6 @@ import * as Sentry from '@sentry/react';
 import {skipToken, useMutation, useQuery} from '@tanstack/react-query';
 import DOMPurify from 'dompurify';
 
-import {
-  OrganizationAvatar,
-  ProjectAvatar,
-  TeamAvatar,
-  UserAvatar,
-} from '@sentry/scraps/avatar';
 import {Tag} from '@sentry/scraps/badge';
 
 import {
@@ -45,6 +39,12 @@ import {
 } from 'sentry/actionCreators/indicator';
 import {openInviteMembersModal} from 'sentry/actionCreators/modal';
 import {openSudo} from 'sentry/actionCreators/sudoModal';
+import {
+  OrganizationAvatar,
+  ProjectAvatar,
+  TeamAvatar,
+  UserAvatar,
+} from 'sentry/components/avatar';
 import {cmdkQueryOptions} from 'sentry/components/commandPalette/types';
 import type {CommandPaletteAction} from 'sentry/components/commandPalette/types';
 import {Override} from 'sentry/components/override';

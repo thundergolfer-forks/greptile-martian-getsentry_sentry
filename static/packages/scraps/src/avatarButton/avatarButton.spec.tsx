@@ -1,4 +1,12 @@
-import {render, screen} from 'sentry-test/reactTestingLibrary';
+import type * as React from 'react';
+import {ThemeProvider} from '@emotion/react';
+import {render as rtlRender, screen, within} from '@testing-library/react';
+
+import {lightTheme} from '@sentry/scraps/theme';
+
+function render(ui: React.ReactNode) {
+  return rtlRender(<ThemeProvider theme={lightTheme}>{ui}</ThemeProvider>);
+}
 
 import {AvatarButton} from '@sentry/scraps/avatarButton';
 
@@ -7,7 +15,7 @@ describe('AvatarButton', () => {
     render(
       <AvatarButton
         aria-label="Open profile"
-        avatar={{type: 'letter_avatar', identifier: 'test-id', name: 'Test User'}}
+        avatar={{identifier: 'test-id', name: 'Test User'}}
       />
     );
 
@@ -21,19 +29,18 @@ describe('AvatarButton', () => {
       <AvatarButton
         aria-label="Open profile"
         avatar={{
-          type: 'upload',
           identifier: 'test-id',
           name: 'Test User',
-          uploadUrl: 'https://example.com/avatar.jpg',
+          src: 'https://example.com/avatar.jpg',
         }}
       />
     );
 
     const button = screen.getByRole('button', {name: 'Open profile'});
     expect(button).toBeInTheDocument();
-    expect(button.querySelector('img')).toHaveAttribute(
+    expect(within(button).queryByRole('img', {name: 'Test User'})).toHaveAttribute(
       'src',
-      'https://example.com/avatar.jpg?s=120'
+      'https://example.com/avatar.jpg'
     );
   });
 
@@ -42,8 +49,9 @@ describe('AvatarButton', () => {
 
     const button = screen.getByRole('button', {name: 'Assign'});
     expect(button).toBeInTheDocument();
-    expect(button.querySelector('img')).not.toBeInTheDocument();
-    expect(button.querySelector('svg')).toBeInTheDocument();
+    expect(
+      within(button).queryByRole('img', {name: 'Test User'})
+    ).not.toBeInTheDocument();
   });
 
   it('renders a suggested letter avatar without throwing', () => {
@@ -51,7 +59,6 @@ describe('AvatarButton', () => {
       <AvatarButton
         aria-label="Suggested assignee"
         avatar={{
-          type: 'letter_avatar',
           identifier: 'test-id',
           name: 'Test User',
           suggested: true,
@@ -69,7 +76,7 @@ describe('AvatarButton', () => {
       <AvatarButton
         aria-label="Open profile"
         round
-        avatar={{type: 'letter_avatar', identifier: 'test-id', name: 'Test User'}}
+        avatar={{identifier: 'test-id', name: 'Test User'}}
       />
     );
 

@@ -2,11 +2,11 @@ import {useMemo} from 'react';
 import styled from '@emotion/styled';
 import {useQuery} from '@tanstack/react-query';
 
-import {AvatarList} from '@sentry/scraps/avatar';
 import {Tag} from '@sentry/scraps/badge';
 import {LinkButton} from '@sentry/scraps/button';
 import {Flex, Stack} from '@sentry/scraps/layout';
 
+import {AvatarList} from 'sentry/components/avatar';
 import {CopyToClipboardButton} from 'sentry/components/copyToClipboardButton';
 import {DateTime} from 'sentry/components/dateTime';
 import {Hovercard} from 'sentry/components/hovercard';

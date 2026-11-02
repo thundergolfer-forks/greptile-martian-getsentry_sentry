@@ -250,6 +250,14 @@
     "./toast": {
       "types": "./dist/toast/index.d.ts",
       "import": "./dist/toast/index.js"
+    },
+    "./avatar": {
+      "types": "./dist/avatar/index.d.ts",
+      "import": "./dist/avatar/index.js"
+    },
+    "./avatarButton": {
+      "types": "./dist/avatarButton/index.d.ts",
+      "import": "./dist/avatarButton/index.js"
     }
   },
   "publishConfig": {
@@ -292,6 +300,7 @@
     "@tanstack/react-hotkeys": "0.17.0",
     "@types/react": "19.3.0",
     "classnames": "2.3.1",
+    "color": "5.0.2",
     "framer-motion": "12.38.0",
     "input-otp": "^1.5.0",
     "query-string": "7.0.1",

@@ -44,7 +44,7 @@ export function FlagsDistributionDrawer({group, organization, setTab}: Props) {
     <Fragment>
       {tagKey ? null : (
         <EventNavigator
-          search={
+          leadingItems={
             <GroupDistributionsSearchInput
               includeFeatureFlagsTab
               search={search}
@@ -57,7 +57,7 @@ export function FlagsDistributionDrawer({group, organization, setTab}: Props) {
               }}
             />
           }
-          actions={
+          trailingItems={
             <Fragment>
               <TagFlagPicker setTab={setTab} tab={DrawerTab.FEATURE_FLAGS} />
               <FeatureFlagSort

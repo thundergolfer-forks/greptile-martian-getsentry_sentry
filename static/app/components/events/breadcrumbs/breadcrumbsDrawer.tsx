@@ -211,7 +211,7 @@ export function BreadcrumbsDrawer({
           }}
         />
       </DrawerHeader>
-      <EventNavigator search={searchInput} actions={actions} />
+      <EventNavigator leadingItems={searchInput} trailingItems={actions} />
       <EventDrawerBody ref={setContainer}>
         <Container column="span 2">
           {displayCrumbs.length === 0 ? (

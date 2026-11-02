@@ -1,3 +1,4 @@
+import type * as React from 'react';
 import {Fragment, useContext, useId, useMemo} from 'react';
 import {useFocusManager} from '@react-aria/focus';
 import type {AriaGridListOptions} from '@react-aria/gridlist';
@@ -7,8 +8,6 @@ import {useListState} from '@react-stately/list';
 
 import {ControlContext} from '@sentry/scraps/menu';
 import type {FormSize} from '@sentry/scraps/theme';
-
-import {defined} from 'sentry/utils/defined';
 
 import {GridList} from './gridList';
 import {ListBox} from './listBox';
@@ -403,4 +402,8 @@ export function List<Value extends SelectKey>({
         )}
     </Fragment>
   );
+}
+
+function defined<T>(value: T | null | undefined): value is T {
+  return value !== null && value !== undefined;
 }

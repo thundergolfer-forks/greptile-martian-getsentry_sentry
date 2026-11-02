@@ -5,12 +5,10 @@ import {VisuallyHidden} from '@react-aria/visually-hidden';
 import type {ListState} from '@react-stately/list';
 import type {Node, Selection} from '@react-types/shared';
 
-import {useTranslation} from '@sentry/scraps/translation/useTranslation';
-
-import {defined} from 'sentry/utils/defined';
-import {fzf} from 'sentry/utils/search/fzf';
+import {useTranslation} from '@sentry/scraps/translation';
 
 import type {SelectProps} from './compactSelect';
+import {fzf} from './fzf';
 import {SectionToggleButton} from './styles';
 import type {
   SearchConfig,
@@ -508,4 +506,8 @@ export function getDuplicateOptionKeysInfo<Value extends SelectKey>(
 
   collect(items);
   return {duplicateOptionKeys: [...duplicates], hasSections, optionCount};
+}
+
+function defined<T>(value: T | null | undefined): value is T {
+  return value !== null && value !== undefined;
 }

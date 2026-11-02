@@ -250,6 +250,14 @@
     "./toast": {
       "types": "./dist/toast/index.d.ts",
       "import": "./dist/toast/index.js"
+    },
+    "./compactSelect": {
+      "types": "./dist/compactSelect/index.d.ts",
+      "import": "./dist/compactSelect/index.js"
+    },
+    "./useVirtualRows": {
+      "types": "./dist/useVirtualRows.d.ts",
+      "import": "./dist/useVirtualRows.js"
     }
   },
   "publishConfig": {
@@ -271,11 +279,14 @@
     "@react-aria/button": "3.15.1",
     "@react-aria/disclosure": "3.2.1",
     "@react-aria/focus": "3.22.1",
+    "@react-aria/gridlist": "3.15.1",
     "@react-aria/i18n": "3.13.1",
     "@react-aria/interactions": "3.28.1",
+    "@react-aria/listbox": "3.16.1",
     "@react-aria/numberfield": "3.13.1",
     "@react-aria/overlays": "3.32.1",
     "@react-aria/radio": "3.13.1",
+    "@react-aria/separator": "3.5.1",
     "@react-aria/slider": "3.9.1",
     "@react-aria/utils": "3.34.1",
     "@react-aria/visually-hidden": "3.9.1",
@@ -290,6 +301,7 @@
     "@sentry/icons": "workspace:*",
     "@sentry/react": "11.7.0",
     "@tanstack/react-hotkeys": "0.17.0",
+    "@tanstack/react-virtual": "3.14.6",
     "@types/react": "19.3.0",
     "classnames": "2.3.1",
     "framer-motion": "12.38.0",

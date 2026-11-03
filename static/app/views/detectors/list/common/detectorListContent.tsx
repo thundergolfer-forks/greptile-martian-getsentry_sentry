@@ -1,4 +1,5 @@
 import {useCallback, type ReactNode} from 'react';
+import {parseAsString, useQueryStates} from 'nuqs';
 
 import {Pagination} from '@sentry/scraps/pagination';
 
@@ -7,13 +8,11 @@ import type {ApiResponse} from 'sentry/utils/api/apiFetch';
 import {getPaginationProps, useGetPaginationCaption} from 'sentry/utils/pagination';
 import {parseLinkHeader} from 'sentry/utils/parseLinkHeader';
 import {VisuallyCompleteWithData} from 'sentry/utils/performanceForSentry';
-import {decodeScalar} from 'sentry/utils/queryString';
-import {useLocation} from 'sentry/utils/useLocation';
-import {useNavigate} from 'sentry/utils/useNavigate';
 import {useProjects} from 'sentry/utils/useProjects';
 import {DetectorListTable} from 'sentry/views/detectors/components/detectorListTable';
 import {DETECTOR_LIST_PAGE_LIMIT} from 'sentry/views/detectors/list/common/constants';
 import {useDetectorListSort} from 'sentry/views/detectors/list/common/useDetectorListSort';
+import {parseAsScalar} from 'sentry/views/explore/queryParams/parsers';
 import {
   LLM_CONTEXT_MAX_ROWS,
   useLLMContext,
@@ -67,16 +66,15 @@ function DetectorListContentInner({
   isSuccess,
 }: DetectorListContentProps) {
   const getPaginationCaption = useGetPaginationCaption();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const [{cursor, query}, setListParams] = useQueryStates(
+    {cursor: parseAsScalar, query: parseAsString.withDefault('')},
+    {history: 'push'}
+  );
 
   const hits = data?.headers['X-Hits'] ?? 0;
   // If maxHits is not set, we assume there is no max
   const maxHits = data?.headers['X-Max-Hits'] ?? Infinity;
   const pageLinks = data?.headers.Link;
-
-  const cursor = decodeScalar(location.query.cursor);
-  const query = decodeScalar(location.query.query) ?? '';
 
   const allResultsVisible = useCallback(() => {
     if (!pageLinks) {
@@ -90,7 +88,7 @@ function DetectorListContentInner({
     isLoading || !data?.json
       ? undefined
       : getPaginationCaption({
-          cursor,
+          cursor: cursor ?? undefined,
           limit: DETECTOR_LIST_PAGE_LIMIT,
           pageLength: data.json.length,
           total: hits,
@@ -120,9 +118,7 @@ function DetectorListContentInner({
     query,
     sort: sort ? `${sort.kind === 'asc' ? '' : '-'}${sort.field}` : '',
     monitorCount: hits,
-    // `?? null` so the key survives serialization on page 1, where there is no
-    // cursor — an undefined value would drop the field entirely.
-    cursor: cursor ?? null,
+    cursor,
     isLoading,
     ...toLLMContextProjectFields(selectedProjects),
     displayedMonitors: formatDetectorRows(
@@ -155,10 +151,7 @@ function DetectorListContentInner({
         {...getPaginationProps(pageLinks)}
         caption={paginationCaption}
         onCursor={newCursor => {
-          navigate({
-            pathname: location.pathname,
-            query: {...location.query, cursor: newCursor},
-          });
+          setListParams({cursor: newCursor ?? null});
         }}
       />
     </div>

@@ -1,5 +1,6 @@
 import {Fragment} from 'react';
 import styled from '@emotion/styled';
+import {useQueryState} from 'nuqs';
 
 import {useResponsivePropValue} from '@sentry/scraps/layout';
 import type {CursorHandler} from '@sentry/scraps/pagination';
@@ -16,7 +17,6 @@ import {DemoTourElement, DemoTourStep} from 'sentry/utils/demoMode/demoTours';
 import type {IndexedMembersByProject} from 'sentry/utils/members/shared';
 import {getPaginationProps} from 'sentry/utils/pagination';
 import {VisuallyCompleteWithData} from 'sentry/utils/performanceForSentry';
-import {useLocation} from 'sentry/utils/useLocation';
 import {IssueListActions} from 'sentry/views/issueList/actions';
 import {GroupListBody, ISSUE_LIST_COLUMNS} from 'sentry/views/issueList/groupListBody';
 import {IssueListBulkCommandPaletteActions} from 'sentry/views/issueList/issueListBulkCommandPaletteActions';
@@ -73,7 +73,7 @@ export function IssueListTable({
   issuesSuccessfullyLoaded,
   pageSize,
 }: IssueListTableProps) {
-  const location = useLocation();
+  const [newParam] = useQueryState('new');
   const selectDisabled = useResponsivePropValue({zero: true, xl: false});
   const {columns, selectionEnabled} = useStreamGroupColumns({
     canSelect: !selectDisabled,
@@ -83,10 +83,7 @@ export function IssueListTable({
   });
 
   const isNewViewEmptyStateActive =
-    location.query.new === 'true' &&
-    !issuesLoading &&
-    !error &&
-    !issuesSuccessfullyLoaded;
+    newParam === 'true' && !issuesLoading && !error && !issuesSuccessfullyLoaded;
 
   if (isNewViewEmptyStateActive) {
     return <NewViewEmptyState />;

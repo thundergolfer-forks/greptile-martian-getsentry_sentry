@@ -23,7 +23,7 @@ class LastDeploy(LastDeployOptional):
     id: str
     environment: str
     dateFinished: str
-    name: str
+    name: str | None
 
 
 class NonMappableUser(TypedDict):

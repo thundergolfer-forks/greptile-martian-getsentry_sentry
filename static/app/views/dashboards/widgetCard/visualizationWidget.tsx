@@ -268,6 +268,9 @@ function VisualizationWidgetContent({
   const droppedDataEnabled =
     !disableFullscreen &&
     organization.features.includes('dashboards-data-fidelity-annotations');
+  // The band reflects the page filters, not this widget's own projects/query, so
+  // it won't follow a fullscreen zoom. Parameterize useDroppedData for per-widget
+  // scope before GA.
   const droppedDataDataset =
     droppedDataEnabled && widget.widgetType
       ? WIDGET_TYPE_TO_DROPPED_DATA_DATASET[widget.widgetType]

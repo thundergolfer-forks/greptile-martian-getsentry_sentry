@@ -12,7 +12,6 @@ import type {Project} from 'sentry/types/project';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {useParams} from 'sentry/utils/useParams';
 import {GroupDistributionsSearchInput} from 'sentry/views/issueDetails/groupDistributions/groupDistributionsSearchInput';
-import {TagExportDropdown} from 'sentry/views/issueDetails/groupDistributions/tagExportDropdown';
 import {TagFlagPicker} from 'sentry/views/issueDetails/groupDistributions/tagFlagPicker';
 import {DrawerTab} from 'sentry/views/issueDetails/groupDistributions/types';
 import {TagDetailsDrawerContent} from 'sentry/views/issueDetails/groupTags/tagDetailsDrawerContent';
@@ -41,18 +40,7 @@ export function TagsDistributionDrawer({
 
   return (
     <Fragment>
-      {tagKey ? (
-        <EventNavigator
-          trailingItems={
-            <TagExportDropdown
-              organization={organization}
-              project={project}
-              group={group}
-              tagKey={tagKey}
-            />
-          }
-        />
-      ) : (
+      {tagKey ? null : (
         <EventNavigator
           leadingItems={
             <GroupDistributionsSearchInput

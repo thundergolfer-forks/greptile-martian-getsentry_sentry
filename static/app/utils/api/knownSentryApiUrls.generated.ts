@@ -286,6 +286,7 @@ export type KnownSentryApiUrls =
   | '/organizations/$organizationIdOrSlug/objectstore/$path'
   | '/organizations/$organizationIdOrSlug/onboarding-continuation-email/'
   | '/organizations/$organizationIdOrSlug/onboarding-tasks/'
+  | '/organizations/$organizationIdOrSlug/onboarding/agent/prompts/'
   | '/organizations/$organizationIdOrSlug/onboarding/agent/runs/'
   | '/organizations/$organizationIdOrSlug/onboarding/agent/runs/$runId/'
   | '/organizations/$organizationIdOrSlug/onboarding/agent/status/'

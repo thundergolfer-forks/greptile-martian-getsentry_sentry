@@ -802,6 +802,7 @@ from .endpoints.internal import (
     InternalWarningsEndpoint,
 )
 from .endpoints.organization_access_request_details import OrganizationAccessRequestDetailsEndpoint
+from .endpoints.organization_agent_handoff import OrganizationAgentHandoffEndpoint
 from .endpoints.organization_agentic_onboarding import (
     OrganizationAgenticOnboardingRunIndexEndpoint,
     OrganizationAgenticOnboardingStatusEndpoint,
@@ -2656,6 +2657,11 @@ ORGANIZATION_URLS: list[URLPattern | URLResolver] = [
         r"^(?P<organization_id_or_slug>[^/]+)/onboarding-tasks/$",
         OrganizationOnboardingTaskEndpoint.as_view(),
         name="sentry-api-0-organization-onboardingtasks",
+    ),
+    re_path(
+        r"^(?P<organization_id_or_slug>[^/]+)/onboarding/agent/prompts/$",
+        OrganizationAgentHandoffEndpoint.as_view(),
+        name="sentry-api-0-organization-agent-handoff",
     ),
     re_path(
         r"^(?P<organization_id_or_slug>[^/]+)/onboarding/agent/runs/$",

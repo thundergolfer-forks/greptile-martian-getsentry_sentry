@@ -1,6 +1,7 @@
 import type * as React from 'react';
 import {useCallback} from 'react';
 import {useInRouterContext} from 'react-router';
+import {parseAsString, useQueryState} from 'nuqs';
 
 import type {ButtonProps} from '@sentry/scraps/button';
 import {Pagination as ControlledPagination} from '@sentry/scraps/pagination';
@@ -9,7 +10,6 @@ import {useTranslation} from '@sentry/scraps/translation';
 import {parseCursor} from 'sentry/utils/cursor';
 import {parseLinkHeader} from 'sentry/utils/parseLinkHeader';
 import {useLocation} from 'sentry/utils/useLocation';
-import {useNavigate} from 'sentry/utils/useNavigate';
 
 type PaginationQuery = Record<string, string | string[] | undefined | null>;
 export type CursorHandler = (
@@ -43,18 +43,16 @@ export function Pagination(props: Props) {
 }
 
 function RoutedPagination(props: Props) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const onCursor = useCallback<CursorHandler>(
-    cursor => navigate({pathname: location.pathname, query: {...location.query, cursor}}),
-    [navigate, location.pathname, location.query]
+  const [, setCursor] = useQueryState(
+    'cursor',
+    parseAsString.withOptions({history: 'push', shallow: false})
   );
   return (
     <CursorPagination
       {...props}
-      onCursor={onCursor}
-      path={location.pathname}
-      query={location.query}
+      onCursor={cursor => {
+        void setCursor(cursor ?? null);
+      }}
     />
   );
 }

@@ -1,7 +1,7 @@
 import {ThemeProvider} from '@emotion/react';
 import {render as renderWithoutRouter} from '@testing-library/react'; // eslint-disable-line no-restricted-imports
 
-import {render, screen, userEvent} from 'sentry-test/reactTestingLibrary';
+import {render, screen, userEvent, waitFor} from 'sentry-test/reactTestingLibrary';
 
 import {lightTheme} from '@sentry/scraps/theme';
 import {
@@ -88,16 +88,48 @@ describe('Pagination', () => {
   });
 
   it('navigates with the cursor merged into the current query by default', async () => {
+    const onNuqsUrlUpdate = jest.fn();
     const {router} = render(<Pagination pageLinks={pageLinks} />, {
+      onNuqsUrlUpdate,
       initialRouterConfig: {
-        location: {pathname: '/items/', query: {foo: 'bar'}},
+        location: {pathname: '/items/', query: {foo: 'bar', project: ['1', '2']}},
       },
     });
 
     await userEvent.click(screen.getByRole('button', {name: 'Next'}));
 
+    await waitFor(() => {
+      expect(router.location.query).toEqual({
+        foo: 'bar',
+        project: ['1', '2'],
+        cursor: '0:25:0',
+      });
+    });
     expect(router.location.pathname).toBe('/items/');
-    expect(router.location.query).toEqual({foo: 'bar', cursor: '0:25:0'});
+    expect(onNuqsUrlUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        options: expect.objectContaining({history: 'push', shallow: false}),
+      })
+    );
+
+    router.navigate(-1);
+    await waitFor(() => {
+      expect(router.location.query).toEqual({foo: 'bar', project: ['1', '2']});
+    });
+  });
+
+  it('removes the cursor when navigating to a link without one', async () => {
+    const {router} = render(
+      <Pagination pageLinks='<http://localhost/api/0/items/>; rel="previous"; results="true"' />,
+      {
+        initialRouterConfig: {
+          location: {pathname: '/items/', query: {foo: 'bar', cursor: '0:25:0'}},
+        },
+      }
+    );
+
+    await userEvent.click(screen.getByRole('button', {name: 'Previous'}));
+    await waitFor(() => expect(router.location.query).toEqual({foo: 'bar'}));
   });
 
   it('calls custom onCursor with (cursor, path, query, delta)', async () => {

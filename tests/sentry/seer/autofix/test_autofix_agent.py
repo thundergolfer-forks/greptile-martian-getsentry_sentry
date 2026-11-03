@@ -621,6 +621,26 @@ class TestTriggerAutofixAgent(TestCase):
 
     @patch("sentry.seer.autofix.autofix_agent.broadcast_webhooks_for_organization.delay")
     @patch("sentry.seer.autofix.autofix_agent.trigger_autofix_feature")
+    def test_agentic_triage_code_changes_runs_repo_checks(
+        self, mock_feature: MagicMock, mock_broadcast: MagicMock
+    ) -> None:
+        mock_feature.return_value = self.create_seer_run(
+            organization=self.group.organization,
+            seer_run_state_id=777,
+            type="feature_run",
+        )
+
+        trigger_autofix_agent(
+            group=self.group,
+            step=AutofixStep.CODE_CHANGES,
+            referrer=AutofixReferrer.AGENTIC_TRIAGE,
+        )
+
+        feature_trigger = mock_feature.call_args.args[1]
+        assert feature_trigger.step_args.should_run_repo_checks is True
+
+    @patch("sentry.seer.autofix.autofix_agent.broadcast_webhooks_for_organization.delay")
+    @patch("sentry.seer.autofix.autofix_agent.trigger_autofix_feature")
     @patch("sentry.seer.autofix.autofix_agent.SeerAgentClient")
     def test_pr_iteration_routes_to_seer_feature(
         self, mock_client_class: MagicMock, mock_feature: MagicMock, mock_broadcast: MagicMock

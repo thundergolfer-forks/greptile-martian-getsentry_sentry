@@ -475,12 +475,8 @@ def trigger_autofix_agent(
                 if not has_budget:
                     raise NoSeerQuotaException()
 
-        # If autofix-should-run-repo-checks is enabled,
-        # we should force bash tools on as it is dependent on bash tools
-        enable_bash_mode = enable_bash_mode or (
-            referrer == AutofixReferrer.AGENTIC_TRIAGE
-            and features.has("organizations:autofix-should-run-repo-checks", group.organization)
-        )
+        # Agentic triage runs the repo's checks, which need bash tools
+        enable_bash_mode = enable_bash_mode or referrer == AutofixReferrer.AGENTIC_TRIAGE
 
         if run_id is not None:
             _assert_existing_run_belongs_to_group(group, run_id)

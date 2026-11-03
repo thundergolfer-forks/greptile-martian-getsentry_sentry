@@ -10,6 +10,10 @@ import {CollapsibleContent} from 'sentry/components/ai/chat/collapsibleContent';
 import {StructuredData} from 'sentry/components/structuredEventData';
 import {getDefaultExpanded} from 'sentry/components/structuredEventData/utils';
 import {
+  ScrubbedText,
+  useHasScrubbedPlaceholders,
+} from 'sentry/views/insights/pages/agents/components/scrubbedText';
+import {
   detectAIContentType,
   parseXmlTagSegments,
   preprocessInlineXmlTags,
@@ -95,6 +99,11 @@ const markdownComponents: MarkdownProps['components'] = {
       {children}
     </Heading>
   ),
+  Text: ({children}) => <ScrubbedText>{children}</ScrubbedText>,
+};
+
+const plainTextMarkdownComponents: MarkdownProps['components'] = {
+  Text: markdownComponents.Text,
 };
 
 /** Fences raw AI content and renders it. Memoized since fencing scans the whole string. */
@@ -239,6 +248,7 @@ export function AIContentRenderer({
   clip,
 }: AIContentRendererProps) {
   const detection = useMemo(() => detectAIContentType(text), [text]);
+  const hasScrubbedPlaceholders = useHasScrubbedPlaceholders();
 
   // Preserve each branch's historical default when the caller doesn't specify:
   // text was clipped, JSON flowed. Explicit `clip` always wins.
@@ -289,10 +299,21 @@ export function AIContentRenderer({
     case 'plain-text':
     default:
       if (inline) {
-        return <Fragment>{text}</Fragment>;
+        return <ScrubbedText>{text}</ScrubbedText>;
       }
       return (
-        <TraceDrawerComponents.MultilineText clip={clipText}>
+        <TraceDrawerComponents.MultilineText
+          clip={clipText}
+          // A custom formatter skips the fallback for markdown that renders blank,
+          // so only take over when there are scrubbed values to mark.
+          renderFormatted={
+            hasScrubbedPlaceholders
+              ? rawText => (
+                  <Markdown raw={rawText} components={plainTextMarkdownComponents} />
+                )
+              : undefined
+          }
+        >
           {text}
         </TraceDrawerComponents.MultilineText>
       );

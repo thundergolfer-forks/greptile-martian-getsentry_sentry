@@ -183,12 +183,18 @@ function Graph({
   const groupBys = useQueryParamsGroupBys();
 
   const [interval, setInterval, intervalOptions] = useChartInterval();
-  const {droppedEvents, acceptedEvents} = useDroppedData({
-    dataset: DiscoverDatasets.OURLOGS,
-    interval,
-  });
+  const {droppedEvents, acceptedEvents} = useDroppedData(
+    {
+      dataset: DiscoverDatasets.OURLOGS,
+      interval,
+    },
+    {enabled: organization.features.includes('explore-data-fidelity-annotations')}
+  );
   const [isDroppedDataLayerOn, setIsDroppedDataLayerOn] = useState(true);
-  const openDroppedDataDrawer = useDroppedDataDrawer({dataset: DiscoverDatasets.OURLOGS});
+  const openDroppedDataDrawer = useDroppedDataDrawer(
+    {dataset: DiscoverDatasets.OURLOGS},
+    {enabled: organization.features.includes('explore-data-fidelity-annotations')}
+  );
   const isDroppedDataLoaded = defined(droppedEvents);
   const canShowDroppedData = hasDroppedData(droppedEvents, acceptedEvents);
   const showDroppedDataBand =

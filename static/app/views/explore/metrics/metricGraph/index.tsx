@@ -17,6 +17,7 @@ import {DiscoverDatasets} from 'sentry/utils/discover/types';
 import {determineSeriesSampleCountAndIsSampled} from 'sentry/utils/timeSeries/determineSeriesSampleCount';
 import {getTimeSeriesForQuery} from 'sentry/utils/timeSeries/getTimeSeriesForQuery';
 import {useChartInterval} from 'sentry/utils/useChartInterval';
+import {useOrganization} from 'sentry/utils/useOrganization';
 import {formatTimeSeriesLabel} from 'sentry/views/dashboards/widgets/timeSeriesWidget/formatters/formatTimeSeriesLabel';
 import {Widget} from 'sentry/views/dashboards/widgets/widget/widget';
 import {ChartVisualization} from 'sentry/views/explore/components/chart/chartVisualization';
@@ -178,14 +179,21 @@ function Graph({
     normalModeExtrapolated: true,
   });
   const [interval] = useChartInterval();
-  const {droppedEvents, acceptedEvents} = useDroppedData({
-    dataset: DiscoverDatasets.TRACEMETRICS,
-    interval,
-  });
+  const organization = useOrganization();
+  const {droppedEvents, acceptedEvents} = useDroppedData(
+    {
+      dataset: DiscoverDatasets.TRACEMETRICS,
+      interval,
+    },
+    {enabled: organization.features.includes('explore-data-fidelity-annotations')}
+  );
   const [isDroppedDataLayerOn, setIsDroppedDataLayerOn] = useState(true);
-  const openDroppedDataDrawer = useDroppedDataDrawer({
-    dataset: DiscoverDatasets.TRACEMETRICS,
-  });
+  const openDroppedDataDrawer = useDroppedDataDrawer(
+    {
+      dataset: DiscoverDatasets.TRACEMETRICS,
+    },
+    {enabled: organization.features.includes('explore-data-fidelity-annotations')}
+  );
 
   const chartInfo = useMemo(() => {
     const isTopEvents = defined(topEventsLimit);

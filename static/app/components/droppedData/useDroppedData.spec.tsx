@@ -113,15 +113,14 @@ describe('useDroppedData', () => {
     expect(result.current.droppedEvents).toEqual(droppedEvents);
   });
 
-  it('does not request dropped events without the feature flag', () => {
+  it('does not request dropped events when disabled', () => {
     const request = MockApiClient.addMockResponse({
       url: `/organizations/${organization.slug}/events-dropped/`,
       body: droppedEventsBody(),
     });
 
-    const {result} = renderHookWithProviders(
-      () => useDroppedData({dataset: DiscoverDatasets.SPANS, interval: '1h'}),
-      {organization: OrganizationFixture({features: []})}
+    const {result} = renderHookWithProviders(() =>
+      useDroppedData({dataset: DiscoverDatasets.SPANS, interval: '1h'}, {enabled: false})
     );
 
     expect(request).not.toHaveBeenCalled();

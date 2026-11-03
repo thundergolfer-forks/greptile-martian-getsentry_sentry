@@ -277,10 +277,7 @@ function VisualizationWidgetContent({
       dataset: droppedDataDataset ?? DiscoverDatasets.SPANS,
       interval: widgetInterval ?? '',
     },
-    {
-      enabled: defined(droppedDataDataset),
-      featureFlag: 'dashboards-data-fidelity-annotations',
-    }
+    {enabled: defined(droppedDataDataset)}
   );
   const openDroppedDataDrawer = useDroppedDataDrawer(
     {dataset: droppedDataDataset ?? DiscoverDatasets.SPANS, interval: widgetInterval},

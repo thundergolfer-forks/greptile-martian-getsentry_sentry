@@ -299,9 +299,15 @@ function Chart({
   const {chartSelection, setChartSelection} = useChartSelection();
   const [interval, setInterval, intervalOptions] = useChartInterval();
   const dataset = useSpansDataset();
-  const {droppedEvents, acceptedEvents} = useDroppedData({dataset, interval});
+  const {droppedEvents, acceptedEvents} = useDroppedData(
+    {dataset, interval},
+    {enabled: organization.features.includes('explore-data-fidelity-annotations')}
+  );
   const [isDroppedDataLayerOn, setIsDroppedDataLayerOn] = useState(true);
-  const openDroppedDataDrawer = useDroppedDataDrawer({dataset});
+  const openDroppedDataDrawer = useDroppedDataDrawer(
+    {dataset},
+    {enabled: organization.features.includes('explore-data-fidelity-annotations')}
+  );
   const isDroppedDataLoaded = defined(droppedEvents);
   const canShowDroppedData = hasDroppedData(droppedEvents, acceptedEvents);
   const showDroppedDataBand = canShowDroppedData && isDroppedDataLayerOn;

@@ -205,12 +205,20 @@ export const ResultsChartContainer = memo(
     const chartInterval = getResultsChartInterval(eventView, location);
     const {droppedEvents, acceptedEvents} = useDroppedData(
       {dataset: DiscoverDatasets.ERRORS, interval: chartInterval},
-      {enabled: isErrorsDataset}
+      {
+        enabled:
+          isErrorsDataset &&
+          organization.features.includes('explore-data-fidelity-annotations'),
+      }
     );
     const [isDroppedDataLayerOn, setIsDroppedDataLayerOn] = useState(true);
     const openDroppedDataDrawer = useDroppedDataDrawer(
       {dataset: DiscoverDatasets.ERRORS, interval: chartInterval},
-      {enabled: isErrorsDataset}
+      {
+        enabled:
+          isErrorsDataset &&
+          organization.features.includes('explore-data-fidelity-annotations'),
+      }
     );
     const isDroppedDataLoaded = isErrorsDataset && defined(droppedEvents);
     const canShowDroppedData =

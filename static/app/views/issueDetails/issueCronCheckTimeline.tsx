@@ -57,7 +57,7 @@ export function useCronIssueAlertId({groupId}: {groupId: string}): string | unde
     retry: false,
   });
 
-  // Fall back to the fetched event since the legacy UI isn't nested within the provider the provider
+  // Fall back to the fetched event when the provider has no detector details
   return hasCronDetector
     ? detectorId
     : event?.tags?.find(({key}) => key === 'monitor.id')?.value;

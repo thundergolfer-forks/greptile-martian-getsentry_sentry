@@ -1,7 +1,10 @@
 import type {BaseAvatarProps as GenericAvatarProps} from '@sentry/scraps/avatar';
 
 import type {BaseAvatarProps} from 'sentry/components/avatar';
-import {useAvatarImageUrl} from 'sentry/components/avatar/useAvatar';
+import {
+  getAvatarInitialsOverride,
+  useAvatarImageUrl,
+} from 'sentry/components/avatar/useAvatar';
 
 export function useResolvedAvatar(
   avatar?: BaseAvatarProps
@@ -17,5 +20,12 @@ export function useResolvedAvatar(
     return undefined;
   }
   const {identifier, name, round, suggested} = avatar;
-  return {identifier, name, round, suggested, src: src ?? undefined};
+  return {
+    identifier,
+    name,
+    initials: getAvatarInitialsOverride(name),
+    round,
+    suggested,
+    src: src ?? undefined,
+  };
 }

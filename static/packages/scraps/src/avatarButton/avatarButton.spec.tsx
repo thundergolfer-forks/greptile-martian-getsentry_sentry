@@ -83,3 +83,13 @@ describe('AvatarButton', () => {
     expect(screen.getByRole('button', {name: 'Open profile'})).toBeInTheDocument();
   });
 });
+
+it('allows an explicit fallback monogram in the button', () => {
+  render(
+    <AvatarButton
+      aria-label="Open profile"
+      avatar={{identifier: 'test-id', name: 'Test User', initials: 'AB'}}
+    />
+  );
+  expect(screen.getByRole('button', {name: 'Open profile'})).toHaveTextContent('AB');
+});

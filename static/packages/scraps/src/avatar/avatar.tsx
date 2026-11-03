@@ -24,6 +24,8 @@ export interface AvatarProps extends BaseAvatarStyleProps {
 export interface BaseAvatarProps extends AvatarProps {
   identifier: string;
   name: string;
+  /** Optional fallback monogram, leaving the image accessible name unchanged. */
+  initials?: string;
   src?: string;
 }
 
@@ -38,8 +40,9 @@ export function Avatar({
   'data-test-id': testId,
   ...avatarProps
 }: BaseAvatarProps) {
-  const {src, identifier, name, title, round, suggested, ...restProps} = avatarProps;
-  const avatarDefinition = useAvatar({identifier, name, src});
+  const {src, identifier, name, initials, title, round, suggested, ...restProps} =
+    avatarProps;
+  const avatarDefinition = useAvatar({identifier, name, initials, src});
 
   return (
     <Tooltip title={tooltip} disabled={!hasTooltip} {...tooltipOptions} skipWrapper>

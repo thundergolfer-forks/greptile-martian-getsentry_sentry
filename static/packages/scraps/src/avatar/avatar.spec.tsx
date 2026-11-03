@@ -56,3 +56,23 @@ describe('Avatar', () => {
     );
   });
 });
+
+it('treats names literally without interpreting application scrub markers', () => {
+  render(<Avatar name="[Filtered]" identifier="test-id" />, {wrapper: ThemeWrapper});
+  expect(screen.getByText('[')).toBeInTheDocument();
+});
+
+it('uses explicit fallback initials without replacing the image accessible name', () => {
+  render(
+    <Avatar
+      name="Test User"
+      identifier="test-id"
+      initials="AB"
+      src="https://example.com/avatar"
+    />,
+    {wrapper: ThemeWrapper}
+  );
+  const image = screen.getByRole('img', {name: 'Test User'});
+  act(() => image.dispatchEvent(new Event('error')));
+  expect(screen.getByText('AB')).toBeInTheDocument();
+});

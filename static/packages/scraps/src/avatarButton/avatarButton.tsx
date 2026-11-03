@@ -44,6 +44,7 @@ export function AvatarButton({
   const avatarDefinition = useAvatar({
     identifier: avatar?.identifier ?? '',
     name: avatar?.name ?? '',
+    initials: avatar?.initials,
     src: avatar?.src,
   });
 

@@ -1,6 +1,6 @@
 import {Avatar as GenericAvatar, type AvatarProps} from '@sentry/scraps/avatar';
 
-import {useAvatarImageUrl} from './useAvatar';
+import {getAvatarInitialsOverride, useAvatarImageUrl} from './useAvatar';
 
 export type {AvatarProps};
 
@@ -49,6 +49,7 @@ export function Avatar(props: BaseAvatarProps) {
       {...appearance}
       identifier={identifier}
       name={name}
+      initials={getAvatarInitialsOverride(name)}
       src={src ?? undefined}
       data-test-id={props['data-test-id'] ?? `${type}-avatar`}
     />

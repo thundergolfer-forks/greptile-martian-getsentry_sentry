@@ -25,6 +25,7 @@ type AvatarDefinition = LetterAvatarDefinition | ImageAvatarDefinition;
 export function useAvatar(options: {
   identifier: string;
   name: string;
+  initials?: string;
   src?: string;
 }): AvatarDefinition {
   const theme = useTheme();
@@ -47,7 +48,7 @@ export function useAvatar(options: {
   return {
     type: 'letter',
     configuration: {
-      initials: getInitials(options.name),
+      initials: options.initials ?? getInitials(options.name),
       background,
       content,
     },
@@ -78,20 +79,11 @@ function useImageSrc(resolvedSrc: string | undefined): {
   };
 }
 
-/**
- * Also see avatar.py. Anything changed in this file (how colors are selected,
- * the svg, etc) will also need to be changed there.
- */
 function getInitials(name: string | undefined): string {
   const sanitizedName =
     name === null || name === undefined ? undefined : String(name).trim();
 
   if (!sanitizedName) {
-    return '?';
-  }
-
-  // Special case for data-scrubbed names
-  if (sanitizedName === '[Filtered]') {
     return '?';
   }
 

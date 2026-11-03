@@ -19,6 +19,7 @@ export function useAvatar(options: {
   return useGenericAvatar({
     identifier: options.identifier,
     name: options.name,
+    initials: getAvatarInitialsOverride(options.name),
     src: src ?? undefined,
   });
 }
@@ -90,4 +91,9 @@ async function hashGravatarId(gravatarId: string): Promise<string> {
   return Array.from(new Uint8Array(hash))
     .map(b => b.toString(16).padStart(2, '0'))
     .join('');
+}
+
+/** Keep the application's scrubbed-name convention out of generic presentation. */
+export function getAvatarInitialsOverride(name: string | undefined): string | undefined {
+  return name?.trim() === '[Filtered]' ? '?' : undefined;
 }

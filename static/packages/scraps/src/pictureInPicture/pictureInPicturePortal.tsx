@@ -1,10 +1,12 @@
 import type * as React from 'react';
-import {useEffect, useMemo} from 'react';
+import {useContext, useEffect, useMemo} from 'react';
 import {createPortal} from 'react-dom';
 import createCache from '@emotion/cache';
 import {CacheProvider, ThemeProvider, useTheme} from '@emotion/react';
 
 import {TooltipContext} from '@sentry/scraps/tooltip';
+
+import {PictureInPicturePortalContext} from './portalContext';
 
 export interface PictureInPicturePortalProps {
   children: React.ReactNode;
@@ -26,6 +28,7 @@ export function PictureInPicturePortal({
   pipWindow,
 }: PictureInPicturePortalProps) {
   const theme = useTheme();
+  const renderPortalContent = useContext(PictureInPicturePortalContext);
 
   // Emotion injects dynamically-generated styles into the cache's container.
   // Bind a dedicated cache to the PiP document head so styles for the portaled
@@ -56,6 +59,7 @@ export function PictureInPicturePortal({
     <CacheProvider value={cache}>
       <ThemeProvider theme={theme}>
         <TooltipContext value={{container: pipWindow.document.body}}>
+          {renderPortalContent?.(pipWindow)}
           {children}
         </TooltipContext>
       </ThemeProvider>

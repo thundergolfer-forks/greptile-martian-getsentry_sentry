@@ -2,13 +2,13 @@ import {ThemeProvider} from '@emotion/react';
 
 import {act, render, renderHook, waitFor} from 'sentry-test/reactTestingLibrary';
 
-import {usePictureInPicture} from '@sentry/scraps/pictureInPicture';
+import {
+  PictureInPicturePortal,
+  usePictureInPicture,
+} from '@sentry/scraps/pictureInPicture';
 import {darkTheme, lightTheme} from '@sentry/scraps/theme';
 
-import {
-  SentryPictureInPicturePortal,
-  SentryPictureInPictureProvider,
-} from './pictureInPicture';
+import {SentryPictureInPictureProvider} from './pictureInPicture';
 
 afterEach(() => {
   delete (window as {documentPictureInPicture?: unknown}).documentPictureInPicture;
@@ -44,14 +44,16 @@ it('injects app global styles and synchronizes body classes when the theme chang
   function Example({theme}: {theme: typeof lightTheme}) {
     return (
       <ThemeProvider theme={theme}>
-        <SentryPictureInPicturePortal pipWindow={pip}>
-          <button type="button">Portal content</button>
-        </SentryPictureInPicturePortal>
+        <SentryPictureInPictureProvider>
+          <PictureInPicturePortal pipWindow={pip}>
+            <button type="button">Portal content</button>
+          </PictureInPicturePortal>
+        </SentryPictureInPictureProvider>
       </ThemeProvider>
     );
   }
   document.body.className = 'theme-light';
-  const {rerender} = render(<Example theme={lightTheme} />);
+  const {rerender, unmount} = render(<Example theme={lightTheme} />);
   expect(pip.document.body).toHaveClass('theme-light');
   expect(
     pip.document.head.querySelector('style[data-emotion="scraps-pip-global"]')
@@ -59,4 +61,11 @@ it('injects app global styles and synchronizes body classes when the theme chang
   document.body.className = 'theme-dark';
   rerender(<Example theme={darkTheme} />);
   await waitFor(() => expect(pip.document.body).toHaveClass('theme-dark'));
+  unmount();
+  document.body.className = 'theme-light';
+  await act(async () => {});
+  expect(pip.document.body).toHaveClass('theme-dark');
+  expect(
+    pip.document.head.querySelector('style[data-emotion="scraps-pip-global"]')
+  ).not.toBeInTheDocument();
 });

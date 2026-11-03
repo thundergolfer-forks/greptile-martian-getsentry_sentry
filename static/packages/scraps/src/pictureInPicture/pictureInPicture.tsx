@@ -9,6 +9,8 @@ import {
   type ReactNode,
 } from 'react';
 
+import {PictureInPicturePortalContext} from './portalContext';
+
 export interface RequestPipWindowOptions {
   height?: number;
   /**
@@ -125,11 +127,14 @@ export interface PictureInPictureProviderProps {
   children: ReactNode;
   /** Configure a newly opened window before its content mounts. */
   onWindowOpen?: (pipWindow: Window) => void;
+  /** Additional portal content, such as application-wide styles or window effects. */
+  renderPortalContent?: (pipWindow: Window) => ReactNode;
 }
 
 export function PictureInPictureProvider({
   children,
   onWindowOpen,
+  renderPortalContent,
 }: PictureInPictureProviderProps) {
   const [pipWindow, setPipWindow] = useState<Window | null>(null);
 
@@ -223,7 +228,9 @@ export function PictureInPictureProvider({
 
   return (
     <PictureInPictureContext.Provider value={value}>
-      {children}
+      <PictureInPicturePortalContext value={renderPortalContent}>
+        {children}
+      </PictureInPicturePortalContext>
     </PictureInPictureContext.Provider>
   );
 }

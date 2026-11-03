@@ -2,11 +2,7 @@ import type * as React from 'react';
 import {useEffect} from 'react';
 import {useTheme} from '@emotion/react';
 
-import {
-  PictureInPicturePortal,
-  PictureInPictureProvider,
-  type PictureInPicturePortalProps,
-} from '@sentry/scraps/pictureInPicture';
+import {PictureInPictureProvider} from '@sentry/scraps/pictureInPicture';
 
 import {GlobalStyles} from 'sentry/styles/global';
 
@@ -16,16 +12,20 @@ function initializeWindow(pipWindow: Window) {
 
 export function SentryPictureInPictureProvider({children}: {children: React.ReactNode}) {
   return (
-    <PictureInPictureProvider onWindowOpen={initializeWindow}>
+    <PictureInPictureProvider
+      onWindowOpen={initializeWindow}
+      renderPortalContent={renderPortalContent}
+    >
       {children}
     </PictureInPictureProvider>
   );
 }
 
-export function SentryPictureInPicturePortal({
-  children,
-  pipWindow,
-}: PictureInPicturePortalProps) {
+function renderPortalContent(pipWindow: Window) {
+  return <PictureInPictureStyles pipWindow={pipWindow} />;
+}
+
+function PictureInPictureStyles({pipWindow}: {pipWindow: Window}) {
   const theme = useTheme();
 
   useEffect(() => {
@@ -39,10 +39,5 @@ export function SentryPictureInPicturePortal({
     return () => observer.disconnect();
   }, [pipWindow]);
 
-  return (
-    <PictureInPicturePortal pipWindow={pipWindow}>
-      <GlobalStyles theme={theme} />
-      {children}
-    </PictureInPicturePortal>
-  );
+  return <GlobalStyles theme={theme} />;
 }

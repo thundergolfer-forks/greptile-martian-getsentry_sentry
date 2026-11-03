@@ -12,13 +12,13 @@ import moment from 'moment-timezone';
 import {Alert} from '@sentry/scraps/alert';
 import {Button, LinkButton} from '@sentry/scraps/button';
 import {Container, Flex, Grid, Stack} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Select} from '@sentry/scraps/select';
 import type {SelectValue} from '@sentry/scraps/select';
 import type {Theme} from '@sentry/scraps/theme';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import type {ModalRenderProps} from 'sentry/actionCreators/modal';
-import {Pagination} from 'sentry/components/pagination';
 import {QuestionTooltip} from 'sentry/components/questionTooltip';
 import {ProvidedFormattedQuery} from 'sentry/components/searchQueryBuilder/formattedQuery';
 import {t, tct} from 'sentry/locale';
@@ -42,6 +42,7 @@ import {
   parseFunction,
   prettifyParsedFunction,
 } from 'sentry/utils/discover/fields';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {parseLinkHeader} from 'sentry/utils/parseLinkHeader';
 import {
   decodeInteger,
@@ -1103,8 +1104,8 @@ function ViewerTableV2({
       ) &&
         (links?.previous?.results || links?.next?.results) && (
           <Pagination
-            pageLinks={pageLinks}
-            onCursor={(nextCursor, _path, _query, delta) => {
+            {...getPaginationProps(pageLinks)}
+            onCursor={(nextCursor, delta) => {
               let nextPage = isNaN(page) ? delta : page + delta;
               let newCursor = nextCursor;
               // unset cursor and page when we navigate back to the first page

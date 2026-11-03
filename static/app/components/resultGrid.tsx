@@ -13,13 +13,13 @@ import {CompactSelect} from '@sentry/scraps/compactSelect';
 import {Input, type InputProps} from '@sentry/scraps/input';
 import {Container, Flex} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Text} from '@sentry/scraps/text';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import type {Client} from 'sentry/api';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {PanelHeader} from 'sentry/components/panels/panelHeader';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
@@ -27,6 +27,7 @@ import type {ColumnAlign} from 'sentry/components/tables/sortableHeaderCell';
 import {t, tct, tn} from 'sentry/locale';
 import type {Cell} from 'sentry/types/system';
 import {getCells} from 'sentry/utils/cells';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {parseLinkHeader} from 'sentry/utils/parseLinkHeader';
 import {useApi} from 'sentry/utils/useApi';
 import {useLocation} from 'sentry/utils/useLocation';
@@ -1298,7 +1299,7 @@ export function ResultGrid({
       {hasPagination && results.pageLinks && (
         <Container marginBottom="2xl">
           <Pagination
-            pageLinks={results.pageLinks}
+            {...getPaginationProps(results.pageLinks)}
             onCursor={useQueryString ? undefined : onCursor}
           />
         </Container>

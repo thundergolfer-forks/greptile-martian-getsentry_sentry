@@ -16,6 +16,7 @@ import {
 } from '@sentry/scraps/compactSelect';
 import {Flex} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 
 import {addErrorMessage, addSuccessMessage} from 'sentry/actionCreators/indicator';
@@ -26,13 +27,13 @@ import {
 import {joinTeamPromise, leaveTeamPromise} from 'sentry/actionCreators/teams';
 import {hasEveryAccess} from 'sentry/components/acl/access';
 import {EmptyMessage} from 'sentry/components/emptyMessage';
-import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {TeamRoleColumnLabel} from 'sentry/components/teamRoleUtils';
 import {t} from 'sentry/locale';
 import type {Member, Organization, Team, TeamMember} from 'sentry/types/organization';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
 import {getApiUrl} from 'sentry/utils/api/getApiUrl';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useApi} from 'sentry/utils/useApi';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -414,7 +415,7 @@ export default function TeamMembers() {
       >
         {renderMembers()}
       </SimpleTable>
-      <Pagination pageLinks={teamMembersPageLinks} />
+      <Pagination {...getPaginationProps(teamMembersPageLinks)} />
     </Fragment>
   );
 }

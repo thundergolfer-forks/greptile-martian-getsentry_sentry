@@ -10,6 +10,7 @@ import {DropdownMenu} from '@sentry/scraps/dropdownMenu';
 import {Container, Flex} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 import {RevealOnHover} from '@sentry/scraps/revealOnHover';
 import {Text} from '@sentry/scraps/text';
 
@@ -21,7 +22,6 @@ import {openNavigateToExternalLinkModal} from 'sentry/actionCreators/modal';
 import {DeviceName} from 'sentry/components/deviceName';
 import {getContextIcon} from 'sentry/components/events/contexts/utils';
 import {extractSelectionParameters} from 'sentry/components/pageFilters/parse';
-import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {TimeSince} from 'sentry/components/timeSince';
 import {t, tct} from 'sentry/locale';
@@ -29,6 +29,7 @@ import type {Group, Tag, TagValue} from 'sentry/types/group';
 import {escapeDoubleQuotes, percent} from 'sentry/utils';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
 import {SavedQueryDatasets} from 'sentry/utils/discover/types';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {escapeIssueTagKey, generateQueryWithTag} from 'sentry/utils/queryString';
 import {isValidUrl} from 'sentry/utils/string/isValidUrl';
 import {useCopyToClipboard} from 'sentry/utils/useCopyToClipboard';
@@ -124,17 +125,17 @@ export function TagDetailsDrawerContent({group}: {group: Group}) {
       {isPending || isError ? null : (
         <Pagination
           caption={paginationCaption}
-          onCursor={(cursor, path, query) =>
+          onCursor={cursor =>
             navigate({
-              pathname: path,
+              pathname: location.pathname,
               query: {
-                ...query,
+                ...location.query,
                 tagDrawerCursor: cursor,
               },
             })
           }
           size="xs"
-          pageLinks={tagValuesResponse?.headers.Link}
+          {...getPaginationProps(tagValuesResponse?.headers.Link)}
         />
       )}
     </Fragment>

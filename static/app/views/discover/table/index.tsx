@@ -2,10 +2,11 @@ import {PureComponent} from 'react';
 import styled from '@emotion/styled';
 import type {Location} from 'history';
 
+import type {CursorHandler} from '@sentry/scraps/pagination';
+import {Pagination} from '@sentry/scraps/pagination';
+
 import type {Client} from 'sentry/api';
 import {ErrorBoundary} from 'sentry/components/errorBoundary';
-import type {CursorHandler} from 'sentry/components/pagination';
-import {Pagination} from 'sentry/components/pagination';
 import {t} from 'sentry/locale';
 import type {Organization} from 'sentry/types/organization';
 import {trackAnalytics} from 'sentry/utils/analytics';
@@ -16,6 +17,7 @@ import {isAPIPayloadSimilar, isFieldsSimilar} from 'sentry/utils/discover/eventV
 import {SPAN_OP_BREAKDOWN_FIELDS} from 'sentry/utils/discover/fields';
 import type {DiscoverDatasets, SavedQueryDatasets} from 'sentry/utils/discover/types';
 import {Measurements} from 'sentry/utils/measurements/measurements';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {parseLinkHeader} from 'sentry/utils/parseLinkHeader';
 import {VisuallyCompleteWithData} from 'sentry/utils/performanceForSentry';
 import {withApi} from 'sentry/utils/withApi';
@@ -305,7 +307,7 @@ class Table extends PureComponent<TableProps, TableState> {
             );
           }}
         </Measurements>
-        <Pagination pageLinks={pageLinks} onCursor={onCursor} />
+        <Pagination {...getPaginationProps(pageLinks)} onCursor={onCursor} />
       </Container>
     );
   }

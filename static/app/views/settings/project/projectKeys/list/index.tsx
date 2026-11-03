@@ -5,6 +5,7 @@ import {useQuery, useMutation} from '@tanstack/react-query';
 
 import {Button} from '@sentry/scraps/button';
 import {ExternalLink} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 
 import {
   addErrorMessage,
@@ -15,13 +16,13 @@ import {hasEveryAccess} from 'sentry/components/acl/access';
 import {EmptyMessage} from 'sentry/components/emptyMessage';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {t, tct} from 'sentry/locale';
 import type {ProjectKey} from 'sentry/types/project';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
 import {getApiUrl} from 'sentry/utils/api/getApiUrl';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {projectKeysApiOptions} from 'sentry/utils/projectKeys';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {useApi} from 'sentry/utils/useApi';
@@ -225,7 +226,7 @@ export default function ProjectKeys() {
               params={params}
             />
           ))}
-          <Pagination pageLinks={keyListResponse.headers.Link} />
+          <Pagination {...getPaginationProps(keyListResponse.headers.Link)} />
         </Fragment>
       )}
     </div>

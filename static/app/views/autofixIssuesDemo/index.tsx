@@ -3,17 +3,18 @@ import {useCallback, useMemo} from 'react';
 import {Tag} from '@sentry/scraps/badge';
 import {Container, Stack} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 import {COL_WIDTH_UNDEFINED} from '@sentry/scraps/table';
 import {Heading, Text} from '@sentry/scraps/text';
 import type {TagVariant} from '@sentry/scraps/theme';
 
 import {LoadingError} from 'sentry/components/loadingError';
-import {Pagination} from 'sentry/components/pagination';
 import {SeerMarkdown} from 'sentry/components/seer/markdown';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {DataGrid, type GridColumnOrder} from 'sentry/components/tables/dataGrid';
 import {TimeSince} from 'sentry/components/timeSince';
 import {t} from 'sentry/locale';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
@@ -172,7 +173,7 @@ export default function AutofixIssuesDemo() {
               }}
               emptyMessage={t('No autofix issues found for this organization.')}
             />
-            <Pagination pageLinks={pageLinks} />
+            <Pagination {...getPaginationProps(pageLinks)} />
           </Container>
         )}
 

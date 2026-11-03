@@ -5,6 +5,7 @@ import type {Location} from 'history';
 
 import {Alert} from '@sentry/scraps/alert';
 import {Grid, Stack} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 import {TabList, Tabs} from '@sentry/scraps/tabs';
 
 import {DocumentationHint} from 'sentry/components/documentationHint';
@@ -17,7 +18,6 @@ import {EnvironmentPageFilter} from 'sentry/components/pageFilters/environment/e
 import {PageFilterBar} from 'sentry/components/pageFilters/pageFilterBar';
 import {ProjectPageFilter} from 'sentry/components/pageFilters/project/projectPageFilter';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
-import {Pagination} from 'sentry/components/pagination';
 import {TransactionSearchQueryBuilder} from 'sentry/components/performance/transactionSearchQueryBuilder';
 import {ProfileEventsTable} from 'sentry/components/profiling/profileEventsTable';
 import {QuestionTooltip} from 'sentry/components/questionTooltip';
@@ -28,6 +28,7 @@ import type {PageFilters} from 'sentry/types/core';
 import type {Project} from 'sentry/types/project';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useProfileEventsApiOptions} from 'sentry/utils/profiling/hooks/useProfileEvents';
 import {formatError, formatSort} from 'sentry/utils/profiling/hooks/utils';
 import {decodeScalar} from 'sentry/utils/queryString';
@@ -359,9 +360,9 @@ function TransactionsTab({onDataState, location, selection}: TabbedContentProps)
         sortableColumns={new Set(fields)}
       />
       <StyledPagination
-        pageLinks={
+        {...getPaginationProps(
           transactions.status === 'success' ? transactions.data.headers.Link : null
-        }
+        )}
       />
     </Stack>
   );

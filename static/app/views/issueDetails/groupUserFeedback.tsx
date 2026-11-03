@@ -1,6 +1,7 @@
 import {useQuery} from '@tanstack/react-query';
 
 import {Stack} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Separator} from '@sentry/scraps/separator';
 import {Text} from '@sentry/scraps/text';
 
@@ -8,9 +9,9 @@ import {EventUserFeedback} from 'sentry/components/events/userFeedback';
 import * as Layout from 'sentry/components/layouts/thirds';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {t} from 'sentry/locale';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
 import {useParams} from 'sentry/utils/useParams';
@@ -87,7 +88,7 @@ function GroupUserFeedback() {
                 eventLink={`/organizations/${organization.slug}/issues/${params.groupId}/events/${item.eventID}/?referrer=user-feedback`}
               />
             ))}
-            <Pagination pageLinks={pageLinks} />
+            <Pagination {...getPaginationProps(pageLinks)} />
           </Stack>
         )}
       </Layout.Main>

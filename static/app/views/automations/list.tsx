@@ -4,16 +4,17 @@ import {useQuery} from '@tanstack/react-query';
 
 import {LinkButton} from '@sentry/scraps/button';
 import {Container, Flex, Grid} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 
 import {PageFilterBar} from 'sentry/components/pageFilters/pageFilterBar';
 import {ProjectPageFilter} from 'sentry/components/pageFilters/project/projectPageFilter';
-import {Pagination, useGetPaginationCaption} from 'sentry/components/pagination';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {AlertsMonitorsShowcaseButton} from 'sentry/components/workflowEngine/alertsMonitorsShowcaseButton';
 import {WorkflowEngineListLayout as ListLayout} from 'sentry/components/workflowEngine/layout/list';
 import {t} from 'sentry/locale';
 import type {Automation} from 'sentry/types/workflowEngine/automations';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps, useGetPaginationCaption} from 'sentry/utils/pagination';
 import {parseLinkHeader} from 'sentry/utils/parseLinkHeader';
 import {VisuallyCompleteWithData} from 'sentry/utils/performanceForSentry';
 import {useLocation} from 'sentry/utils/useLocation';
@@ -147,7 +148,7 @@ function AutomationsListInner() {
             />
           </VisuallyCompleteWithData>
           <Pagination
-            pageLinks={pageLinks}
+            {...getPaginationProps(pageLinks)}
             caption={paginationCaption}
             onCursor={newCursor => {
               navigate({

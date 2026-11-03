@@ -5,16 +5,17 @@ import {keepPreviousData, useQuery} from '@tanstack/react-query';
 
 import {Grid} from '@sentry/scraps/layout';
 import {ExternalLink} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 
 import {DateTime} from 'sentry/components/dateTime';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {PanelBody} from 'sentry/components/panels/panelBody';
 import {t, tct} from 'sentry/locale';
 import {apiOptions} from 'sentry/utils/api/apiOptions';
 import {getApiUrl} from 'sentry/utils/api/getApiUrl';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useApiQuery} from 'sentry/utils/queryClient';
 import {useNavigate} from 'sentry/utils/useNavigate';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -125,7 +126,7 @@ function InvoiceDetails() {
         title={t('Receipt Details')}
         action={
           <InvoicePagination
-            pageLinks={pageLinks}
+            {...getPaginationProps(pageLinks)}
             onCursor={cursor => cursor && navigate(receiptUrl(cursor))}
           />
         }

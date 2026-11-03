@@ -8,9 +8,9 @@ import groupBy from 'lodash/groupBy';
 
 import {LinkButton} from '@sentry/scraps/button';
 import {Link} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
-import {Pagination} from 'sentry/components/pagination';
 import {QuestionTooltip} from 'sentry/components/questionTooltip';
 import {DataGrid} from 'sentry/components/tables/dataGrid';
 import {t, tct} from 'sentry/locale';
@@ -30,6 +30,7 @@ import type {QueryError} from 'sentry/utils/discover/genericDiscoverQuery';
 import {generateLinkToEventInTraceView} from 'sentry/utils/discover/urls';
 import {ViewReplayLink} from 'sentry/utils/discover/viewReplayLink';
 import {isEmptyObject} from 'sentry/utils/object/isEmptyObject';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {parseLinkHeader} from 'sentry/utils/parseLinkHeader';
 import {VisuallyCompleteWithData} from 'sentry/utils/performanceForSentry';
 import {useApi} from 'sentry/utils/useApi';
@@ -475,7 +476,7 @@ export function EventsTable({
                       <Pagination
                         disabled={isDiscoverQueryLoading}
                         caption={paginationCaption}
-                        pageLinks={pageLinks}
+                        {...getPaginationProps(pageLinks)}
                       />
                     )}
                   </Fragment>

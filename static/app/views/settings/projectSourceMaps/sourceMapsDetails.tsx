@@ -8,12 +8,12 @@ import {Tag} from '@sentry/scraps/badge';
 import {LinkButton} from '@sentry/scraps/button';
 import {Flex} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import {useRole} from 'sentry/components/acl/useRole';
 import {FileSize} from 'sentry/components/fileSize';
-import {Pagination} from 'sentry/components/pagination';
 import {SearchBar} from 'sentry/components/searchBar';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {TimeSince} from 'sentry/components/timeSince';
@@ -22,6 +22,7 @@ import type {Project} from 'sentry/types/project';
 import type {Artifact, Release} from 'sentry/types/release';
 import type {DebugIdBundleArtifact} from 'sentry/types/sourceMaps';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {isUUID} from 'sentry/utils/string/isUUID';
 import {useApi} from 'sentry/utils/useApi';
@@ -341,11 +342,11 @@ export function SourceMapsDetails({bundleId, project}: Props) {
             })}
       </SimpleTable>
       <Pagination
-        pageLinks={
+        {...getPaginationProps(
           isDebugIdBundle
             ? (debugIdBundlesArtifactsResponse?.headers.Link ?? '')
             : (artifactsResponse?.headers.Link ?? '')
-        }
+        )}
       />
     </Fragment>
   );

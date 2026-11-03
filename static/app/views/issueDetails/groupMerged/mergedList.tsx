@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
 
+import {Pagination} from '@sentry/scraps/pagination';
+
 import {EmptyStateWarning} from 'sentry/components/emptyStateWarning';
-import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {PanelBody} from 'sentry/components/panels/panelBody';
 import {t} from 'sentry/locale';
 import type {Group} from 'sentry/types/group';
 import type {Project} from 'sentry/types/project';
+import {getPaginationProps} from 'sentry/utils/pagination';
 
 import {MergedItem} from './mergedItem';
 import {MergedToolbar} from './mergedToolbar';
@@ -84,7 +86,10 @@ export function MergedList({
           ))}
         </PanelBody>
       </MergedPanel>
-      <Pagination pageLinks={pageLinks} onCursor={cursor => setCursor(cursor ?? null)} />
+      <Pagination
+        {...getPaginationProps(pageLinks)}
+        onCursor={cursor => setCursor(cursor ?? null)}
+      />
     </div>
   );
 }

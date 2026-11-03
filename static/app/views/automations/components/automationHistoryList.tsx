@@ -5,14 +5,15 @@ import {PlatformIcon} from 'platformicons';
 
 import {Flex} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 
 import {DateTime} from 'sentry/components/dateTime';
-import {Pagination, useGetPaginationCaption} from 'sentry/components/pagination';
 import {Placeholder} from 'sentry/components/placeholder';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {t} from 'sentry/locale';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps, useGetPaginationCaption} from 'sentry/utils/pagination';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -156,7 +157,7 @@ export function AutomationHistoryList({automationId, query}: Props) {
             },
           });
         }}
-        pageLinks={pageLinks}
+        {...getPaginationProps(pageLinks)}
         caption={paginationCaption}
       />
     </Fragment>

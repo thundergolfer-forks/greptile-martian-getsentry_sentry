@@ -1,7 +1,8 @@
 import {useCallback} from 'react';
 import {useQueryState} from 'nuqs';
 
-import type {CursorHandler} from 'sentry/components/pagination';
+import type {CursorHandler} from '@sentry/scraps/pagination';
+
 import {TableUrlParams} from 'sentry/views/insights/pages/agents/utils/urlParams';
 
 interface UseTableCursorResult {
@@ -11,7 +12,7 @@ interface UseTableCursorResult {
   cursor: string | undefined;
   /**
    * Handler function compatible with Pagination's onCursor prop.
-   * Only uses the cursor parameter, ignoring path, query, and delta.
+   * Only uses the cursor parameter, ignoring the navigation delta.
    */
   setCursor: CursorHandler;
   /**

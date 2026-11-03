@@ -1,11 +1,11 @@
 import {Fragment, useContext} from 'react';
 
 import {Container} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 
 import * as Layout from 'sentry/components/layouts/thirds';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {PanelBody} from 'sentry/components/panels/panelBody';
 import {PanelHeader} from 'sentry/components/panels/panelHeader';
@@ -14,6 +14,7 @@ import {t} from 'sentry/locale';
 import type {Repository} from 'sentry/types/integrations';
 import type {Organization} from 'sentry/types/organization';
 import type {Project} from 'sentry/types/project';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {routeTitleGen} from 'sentry/utils/routeTitle';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -94,7 +95,7 @@ function CommitsList({organization, releaseRepos, projectSlug}: CommitsProps) {
                 ))}
               </PanelBody>
             </Panel>
-            <Pagination pageLinks={data?.headers.Link} />
+            <Pagination {...getPaginationProps(data?.headers.Link)} />
           </Fragment>
         ) : (
           <EmptyState>

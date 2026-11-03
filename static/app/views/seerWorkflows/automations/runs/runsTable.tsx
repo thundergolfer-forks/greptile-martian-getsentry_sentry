@@ -1,5 +1,6 @@
 import {Fragment} from 'react';
 
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Text} from '@sentry/scraps/text';
 import {Tooltip} from '@sentry/scraps/tooltip';
@@ -7,10 +8,10 @@ import {Tooltip} from '@sentry/scraps/tooltip';
 import {DateTime} from 'sentry/components/dateTime';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {TimeSince} from 'sentry/components/timeSince';
 import {t} from 'sentry/locale';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useAutomationRuns} from 'sentry/views/seerWorkflows/automations/hooks/useAutomationRuns';
@@ -65,7 +66,7 @@ export function RunsTable({configId}: {configId?: string}) {
           runs.map(run => <RunRow key={run.id} run={run} />)
         )}
       </SimpleTable>
-      <Pagination pageLinks={pageLinks} />
+      <Pagination {...getPaginationProps(pageLinks)} />
     </Fragment>
   );
 }

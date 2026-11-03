@@ -9,18 +9,19 @@ import {Button} from '@sentry/scraps/button';
 import {CompactSelect} from '@sentry/scraps/compactSelect';
 import {Container, Flex, Stack, Grid} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 
 import Feature from 'sentry/components/acl/feature';
 import {FeatureDisabled} from 'sentry/components/acl/featureDisabled';
 import {FeedbackButton} from 'sentry/components/feedbackButton/feedbackButton';
 import {Hovercard} from 'sentry/components/hovercard';
 import * as Layout from 'sentry/components/layouts/thirds';
-import {Pagination} from 'sentry/components/pagination';
 import {SearchBar} from 'sentry/components/searchBar';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {t} from 'sentry/locale';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useRouteAnalyticsParams} from 'sentry/utils/routeAnalytics/useRouteAnalyticsParams';
 import {unreachable} from 'sentry/utils/unreachable';
 import {normalizeUrl} from 'sentry/utils/url/normalizeUrl';
@@ -202,7 +203,7 @@ function IssueViewSection({
         hideCreatedBy={createdBy === GroupSearchViewCreatedBy.ME}
       />
       <Pagination
-        pageLinks={pageLinks}
+        {...getPaginationProps(pageLinks)}
         onCursor={newCursor => {
           navigate(
             {

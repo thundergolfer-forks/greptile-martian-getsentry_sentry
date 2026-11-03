@@ -2,9 +2,10 @@ import {Fragment, useEffect} from 'react';
 import {useQuery} from '@tanstack/react-query';
 import {parseAsBoolean, parseAsString, useQueryStates} from 'nuqs';
 
+import type {CursorHandler} from '@sentry/scraps/pagination';
+
 import {addErrorMessage} from 'sentry/actionCreators/indicator';
 import {normalizeDateTimeString} from 'sentry/components/pageFilters/parse';
-import type {CursorHandler} from 'sentry/components/pagination';
 import type {ChangeData} from 'sentry/components/timeRangeSelector';
 import type {AuditLog} from 'sentry/types/organization';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';

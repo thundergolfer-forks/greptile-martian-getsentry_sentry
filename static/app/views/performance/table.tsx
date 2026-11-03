@@ -5,12 +5,12 @@ import type {Location} from 'history';
 import {Flex} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
 import {useModal} from '@sentry/scraps/modal';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import {addSuccessMessage} from 'sentry/actionCreators/indicator';
 import {GuideAnchor} from 'sentry/components/assistant/guideAnchor';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {ColumnLabel} from 'sentry/components/tables/columnLabel';
 import {DataGrid} from 'sentry/components/tables/dataGrid';
 import {t, tct} from 'sentry/locale';
@@ -21,6 +21,7 @@ import type {TableData, TableDataRow} from 'sentry/utils/discover/discoverQuery'
 import {DiscoverQuery} from 'sentry/utils/discover/discoverQuery';
 import type {EventView} from 'sentry/utils/discover/eventView';
 import {getAggregateAlias} from 'sentry/utils/discover/fields';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {MEPConsumer} from 'sentry/utils/performance/contexts/useMEPSettingContext';
 import {VisuallyCompleteWithData} from 'sentry/utils/performanceForSentry';
 import {MutableSearch} from 'sentry/utils/tokenizeSearch';
@@ -498,8 +499,10 @@ export function Table({
                       />
                     </VisuallyCompleteWithData>
                     <Pagination
-                      pageLinks={pageLinks}
-                      paginationAnalyticsEvent={paginationAnalyticsEvent}
+                      {...getPaginationProps(pageLinks)}
+                      onPageChange={(_cursor, delta) =>
+                        paginationAnalyticsEvent(delta === -1 ? 'Previous' : 'Next')
+                      }
                     />
                   </TrackHasDataAnalytics>
                 );

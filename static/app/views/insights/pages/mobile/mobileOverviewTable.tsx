@@ -2,10 +2,10 @@ import {useTheme, type Theme} from '@emotion/react';
 import {IconStar} from '@sentry/icons/star';
 import type {Location} from 'history';
 
+import type {CursorHandler} from '@sentry/scraps/pagination';
+import {Pagination} from '@sentry/scraps/pagination';
 import {COL_WIDTH_UNDEFINED} from '@sentry/scraps/table';
 
-import type {CursorHandler} from 'sentry/components/pagination';
-import {Pagination} from 'sentry/components/pagination';
 import {ColumnLabel} from 'sentry/components/tables/columnLabel';
 import {DataGrid, type GridColumnHeader} from 'sentry/components/tables/dataGrid';
 import {useQueryBasedColumnResize} from 'sentry/components/tables/dataGrid/useQueryBasedColumnResize';
@@ -14,6 +14,7 @@ import type {Organization} from 'sentry/types/organization';
 import type {EventsMetaType} from 'sentry/utils/discover/eventView';
 import {getFieldRenderer} from 'sentry/utils/discover/fieldRenderers';
 import type {Sort} from 'sentry/utils/discover/fields';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {VisuallyCompleteWithData} from 'sentry/utils/performanceForSentry';
 import {useLocation} from 'sentry/utils/useLocation';
 import type {ReactRouter3Navigate} from 'sentry/utils/useNavigate';
@@ -134,7 +135,8 @@ export function MobileOverviewTable({response, sort}: Props) {
   const location = useLocation();
   const organization = useOrganization();
   const theme = useTheme();
-  const handleCursor: CursorHandler = (newCursor, pathname, query) => {
+  const handleCursor: CursorHandler = newCursor => {
+    const {pathname, query} = location;
     navigate({
       pathname,
       query: {...query, [QueryParameterNames.PAGES_CURSOR]: newCursor},
@@ -167,7 +169,7 @@ export function MobileOverviewTable({response, sort}: Props) {
           onResizeColumn: handleResizeColumn,
         }}
       />
-      <Pagination pageLinks={pageLinks} onCursor={handleCursor} />
+      <Pagination {...getPaginationProps(pageLinks)} onCursor={handleCursor} />
     </VisuallyCompleteWithData>
   );
 }

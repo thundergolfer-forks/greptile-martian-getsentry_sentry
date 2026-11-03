@@ -12,11 +12,11 @@ import {Alert} from '@sentry/scraps/alert';
 import {Button, LinkButton} from '@sentry/scraps/button';
 import {ExternalLink, Link} from '@sentry/scraps/link';
 import {useModal} from '@sentry/scraps/modal';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 
 import {addErrorMessage, addSuccessMessage} from 'sentry/actionCreators/indicator';
 import {EmptyMessage} from 'sentry/components/emptyMessage';
-import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {t, tct} from 'sentry/locale';
 import type {Integration, RepositoryProjectPathConfig} from 'sentry/types/integrations';
@@ -25,6 +25,7 @@ import {useFetchAllPages} from 'sentry/utils/api/apiFetch';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
 import {getApiUrl} from 'sentry/utils/api/getApiUrl';
 import {getIntegrationIcon} from 'sentry/utils/integrationUtil';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {organizationRepositoriesInfiniteOptions} from 'sentry/utils/repositories/repoQueryOptions';
 import type {RequestError} from 'sentry/utils/requestError/requestError';
 import {useRouteAnalyticsEventNames} from 'sentry/utils/routeAnalytics/useRouteAnalyticsEventNames';
@@ -372,7 +373,9 @@ export function IntegrationCodeMappings({integration}: {integration: Integration
             .filter(item => !!item)
         )}
       </SimpleTable>
-      {pathConfigsPageLinks && <Pagination pageLinks={pathConfigsPageLinks} />}
+      {pathConfigsPageLinks && (
+        <Pagination {...getPaginationProps(pathConfigsPageLinks)} />
+      )}
     </Fragment>
   );
 }

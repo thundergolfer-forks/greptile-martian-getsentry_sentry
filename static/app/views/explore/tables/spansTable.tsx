@@ -4,12 +4,12 @@ import {IconChevron} from '@sentry/icons/chevron';
 
 import {Button} from '@sentry/scraps/button';
 import {Flex} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Text} from '@sentry/scraps/text';
 
 import {addErrorMessage} from 'sentry/actionCreators/indicator';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {Placeholder} from 'sentry/components/placeholder';
 import {getNextDirection} from 'sentry/components/tables/getNextSort';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
@@ -21,6 +21,7 @@ import type {EventData, MetaType} from 'sentry/utils/discover/eventView';
 import {fieldAlignment} from 'sentry/utils/discover/fields';
 import {getQueryErrorMessage} from 'sentry/utils/discover/genericDiscoverQuery';
 import {FieldValueType, getFieldDefinition, prettifyTagKey} from 'sentry/utils/fields';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useOrganization} from 'sentry/utils/useOrganization';
 import type {TableColumn} from 'sentry/views/discover/table/types';
 import type {SpansTableResult} from 'sentry/views/explore/hooks/useExploreSpansTable';
@@ -277,8 +278,10 @@ export function SpansTable({
         />
       ) : null}
       <Pagination
-        pageLinks={displayedPageLinks}
-        paginationAnalyticsEvent={paginationAnalyticsEvent}
+        {...getPaginationProps(displayedPageLinks)}
+        onPageChange={(_cursor, delta) =>
+          paginationAnalyticsEvent(delta === -1 ? 'Previous' : 'Next')
+        }
       />
     </Fragment>
   );

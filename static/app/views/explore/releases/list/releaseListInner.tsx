@@ -2,10 +2,11 @@ import {Fragment} from 'react';
 import {IconSearch} from '@sentry/icons/search';
 import type {Location} from 'history';
 
+import {Pagination} from '@sentry/scraps/pagination';
+
 import {EmptyMessage} from 'sentry/components/emptyMessage';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
 import {ALL_ACCESS_PROJECTS} from 'sentry/components/pageFilters/constants';
-import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {getRelativeSummary} from 'sentry/components/timeRangeSelector/utils';
 import {DEFAULT_STATS_PERIOD} from 'sentry/constants';
@@ -15,6 +16,7 @@ import type {PageFilters} from 'sentry/types/core';
 import type {Organization} from 'sentry/types/organization';
 import type {Project} from 'sentry/types/project';
 import {HealthStatsPeriodOption, type Release} from 'sentry/types/release';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {useLocation} from 'sentry/utils/useLocation';
 import {ReleaseCard} from 'sentry/views/explore/releases/list/releaseCard';
@@ -126,7 +128,7 @@ export function ReleaseListInner({
                 showReleaseAdoptionStages={showReleaseAdoptionStages}
               />
             ))}
-            <Pagination pageLinks={releasesPageLinks} />
+            <Pagination {...getPaginationProps(releasesPageLinks)} />
           </Fragment>
         );
       }}

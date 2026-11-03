@@ -11,6 +11,8 @@ import partition from 'lodash/partition';
 import {Button} from '@sentry/scraps/button';
 import {Stack, Container} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
+import type {CursorHandler} from '@sentry/scraps/pagination';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import ChartZoom from 'sentry/components/charts/chartZoom';
@@ -20,14 +22,13 @@ import {EmptyStateWarning} from 'sentry/components/emptyStateWarning';
 import {IdBadge} from 'sentry/components/idBadge';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
-import type {CursorHandler} from 'sentry/components/pagination';
-import {Pagination} from 'sentry/components/pagination';
 import {PerformanceDuration} from 'sentry/components/performanceDuration';
 import {TextOverflow} from 'sentry/components/textOverflow';
 import {t, tct} from 'sentry/locale';
 import type {Series} from 'sentry/types/echarts';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {axisLabelFormatter, tooltipFormatter} from 'sentry/utils/discover/charts';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import type {FunctionTrend, TrendType} from 'sentry/utils/profiling/hooks/types';
 import {useProfileFunctionTrends} from 'sentry/utils/profiling/hooks/useProfileFunctionTrends';
 import {generateProfileRouteFromProfileReference} from 'sentry/utils/profiling/routes';
@@ -89,13 +90,14 @@ export function FunctionTrendsWidget({
   );
 
   const handleCursor = useCallback(
-    (cursor: any, pathname: any, query: any) => {
+    (cursor: string | undefined) => {
+      const {pathname, query} = location;
       navigate({
         pathname,
         query: {...query, [cursorName]: cursor},
       });
     },
-    [cursorName, navigate]
+    [cursorName, location, navigate]
   );
 
   const paginationAnalyticsEvent = useCallback(
@@ -222,10 +224,12 @@ function FunctionTrendsWidgetHeader({
           )}
           <Subtitle>{t('Functions by most regressed.')}</Subtitle>
           <StyledPagination
-            pageLinks={pageLinks}
+            {...getPaginationProps(pageLinks)}
             size="xs"
             onCursor={handleCursor}
-            paginationAnalyticsEvent={paginationAnalyticsEvent}
+            onPageChange={(_cursor, delta) =>
+              paginationAnalyticsEvent(delta === -1 ? 'Previous' : 'Next')
+            }
           />
         </HeaderContainer>
       );
@@ -237,10 +241,12 @@ function FunctionTrendsWidgetHeader({
           )}
           <Subtitle>{t('Functions by most improved.')}</Subtitle>
           <StyledPagination
-            pageLinks={pageLinks}
+            {...getPaginationProps(pageLinks)}
             size="xs"
             onCursor={handleCursor}
-            paginationAnalyticsEvent={paginationAnalyticsEvent}
+            onPageChange={(_cursor, delta) =>
+              paginationAnalyticsEvent(delta === -1 ? 'Previous' : 'Next')
+            }
           />
         </HeaderContainer>
       );

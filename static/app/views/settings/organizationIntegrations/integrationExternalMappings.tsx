@@ -6,12 +6,12 @@ import {IconDelete} from '@sentry/icons/delete';
 
 import {Button} from '@sentry/scraps/button';
 import {InfoTip} from '@sentry/scraps/info';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 
 import {Confirm} from 'sentry/components/confirm';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {PluginIcon} from 'sentry/icons/pluginIcon';
 import {t, tct} from 'sentry/locale';
@@ -23,6 +23,7 @@ import type {
 } from 'sentry/types/integrations';
 import {getApiUrl} from 'sentry/utils/api/getApiUrl';
 import {isExternalActorMapping} from 'sentry/utils/integrationUtil';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useApiQuery} from 'sentry/utils/queryClient';
 import {capitalize} from 'sentry/utils/string/capitalize';
 import {useLocation} from 'sentry/utils/useLocation';
@@ -276,7 +277,7 @@ export function IntegrationExternalMappings(props: Props) {
           </SimpleTable.Empty>
         )}
       </MappingTable>
-      <Pagination pageLinks={pageLinks} />
+      <Pagination {...getPaginationProps(pageLinks)} />
     </Fragment>
   );
 }

@@ -9,6 +9,7 @@ import {Button} from '@sentry/scraps/button';
 import {CodeBlock} from '@sentry/scraps/codeBlock';
 import {Grid, Container} from '@sentry/scraps/layout';
 import {ExternalLink, Link} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import {Access} from 'sentry/components/acl/access';
@@ -20,7 +21,6 @@ import {
   projectPlatformToDocsMap,
 } from 'sentry/components/events/interfaces/sourceMapsDebuggerModal';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {SearchBar} from 'sentry/components/searchBar';
 import {KeyValueTableDataRow} from 'sentry/components/tables/keyValueTable';
@@ -32,6 +32,7 @@ import type {Release, SourceMapsArchive} from 'sentry/types/release';
 import type {DebugIdBundle, DebugIdBundleAssociation} from 'sentry/types/sourceMaps';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
 import {defined} from 'sentry/utils/defined';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
@@ -397,7 +398,7 @@ function SourceMapUploadsList({
           </Item>
         ))}
       </Grid>
-      <Pagination pageLinks={pageLinks} />
+      <Pagination {...getPaginationProps(pageLinks)} />
     </Fragment>
   );
 }

@@ -5,11 +5,11 @@ import {keepPreviousData, useQuery} from '@tanstack/react-query';
 import {parseAsString, useQueryStates} from 'nuqs';
 
 import {Container, Flex} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 
 import {EmptyMessage} from 'sentry/components/emptyMessage';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {PanelBody} from 'sentry/components/panels/panelBody';
 import {PanelHeader} from 'sentry/components/panels/panelHeader';
@@ -20,6 +20,7 @@ import {DEFAULT_DEBOUNCE_DURATION} from 'sentry/constants';
 import {t} from 'sentry/locale';
 import type {Project, ProjectStats} from 'sentry/types/project';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {sortProjects} from 'sentry/utils/project/sortProjects';
 import {routeTitleGen} from 'sentry/utils/routeTitle';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -115,7 +116,7 @@ function OrganizationProjects() {
       </Panel>
       {projectListPageLinks && (
         <Pagination
-          pageLinks={projectListPageLinks}
+          {...getPaginationProps(projectListPageLinks)}
           onCursor={nextCursor =>
             setSearchParams({cursor: nextCursor ?? null}, {history: 'push'})
           }

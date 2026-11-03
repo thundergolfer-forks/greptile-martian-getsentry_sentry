@@ -1,6 +1,8 @@
 import {useQuery} from '@tanstack/react-query';
 
 import {Stack} from '@sentry/scraps/layout';
+import type {CursorHandler} from '@sentry/scraps/pagination';
+import {Pagination} from '@sentry/scraps/pagination';
 
 import {addErrorMessage} from 'sentry/actionCreators/indicator';
 import {
@@ -11,12 +13,11 @@ import {
 import {hasEveryAccess} from 'sentry/components/acl/access';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import type {CursorHandler} from 'sentry/components/pagination';
-import {Pagination} from 'sentry/components/pagination';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {t, tct} from 'sentry/locale';
 import {TeamStore} from 'sentry/stores/teamStore';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {routeTitleGen} from 'sentry/utils/routeTitle';
 import {useLocation} from 'sentry/utils/useLocation';
@@ -111,7 +112,7 @@ export default function ProjectTeams() {
           onRemoveTeam={handleRemoveTeamFromProject}
           onCreateTeam={handleAddTeamToProject}
         />
-        <Pagination pageLinks={data?.headers.Link} onCursor={handleCursor} />
+        <Pagination {...getPaginationProps(data?.headers.Link)} onCursor={handleCursor} />
       </div>
     </SentryDocumentTitle>
   );

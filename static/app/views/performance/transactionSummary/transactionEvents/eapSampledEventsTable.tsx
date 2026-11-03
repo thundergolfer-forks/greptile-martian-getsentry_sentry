@@ -8,6 +8,7 @@ import type {Location} from 'history';
 import {LinkButton} from '@sentry/scraps/button';
 import {Container, Flex} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
+import {Pagination, type CursorHandler} from '@sentry/scraps/pagination';
 import {COL_WIDTH_UNDEFINED} from '@sentry/scraps/table';
 import type {Theme} from '@sentry/scraps/theme';
 import {Tooltip} from '@sentry/scraps/tooltip';
@@ -15,7 +16,6 @@ import {Tooltip} from '@sentry/scraps/tooltip';
 import {Duration} from 'sentry/components/duration';
 import {normalizeDateTimeParams} from 'sentry/components/pageFilters/parse';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
-import {Pagination, type CursorHandler} from 'sentry/components/pagination';
 import {RowRectangle} from 'sentry/components/performance/waterfall/rowBar';
 import {pickBarColor} from 'sentry/components/performance/waterfall/utils';
 import {QuestionTooltip} from 'sentry/components/questionTooltip';
@@ -32,6 +32,7 @@ import {
 } from 'sentry/utils/discover/fields';
 import {toPercent} from 'sentry/utils/number/toPercent';
 import {isEmptyObject} from 'sentry/utils/object/isEmptyObject';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar, decodeSorts} from 'sentry/utils/queryString';
 import {projectSupportsReplay} from 'sentry/utils/replays/projectSupportsReplay';
 import {MutableSearch} from 'sentry/utils/tokenizeSearch';
@@ -260,7 +261,7 @@ export function SampledEventsTable({
         }}
       />
       <Pagination
-        pageLinks={pageLinks}
+        {...getPaginationProps(pageLinks)}
         onCursor={onCursor}
         size="md"
         caption={numEventsError ? undefined : paginationCaption}

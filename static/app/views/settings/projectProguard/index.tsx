@@ -4,16 +4,17 @@ import {useQuery} from '@tanstack/react-query';
 
 import {Stack} from '@sentry/scraps/layout';
 import {ExternalLink} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 
 import {addErrorMessage, addSuccessMessage} from 'sentry/actionCreators/indicator';
-import {Pagination} from 'sentry/components/pagination';
 import {SearchBar} from 'sentry/components/searchBar';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {t, tct} from 'sentry/locale';
 import type {DebugFile} from 'sentry/types/debugFiles';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
 import {getApiUrl} from 'sentry/utils/api/getApiUrl';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useApi} from 'sentry/utils/useApi';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
@@ -159,7 +160,7 @@ export default function ProjectProguard() {
               })
             : null}
         </SimpleTable>
-        <Pagination pageLinks={mappingsPageLinks} />
+        <Pagination {...getPaginationProps(mappingsPageLinks)} />
       </Stack>
     </Fragment>
   );

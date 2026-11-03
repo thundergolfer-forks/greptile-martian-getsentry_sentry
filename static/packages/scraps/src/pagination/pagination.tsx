@@ -1,4 +1,5 @@
 import type * as React from 'react';
+import {createContext, useContext} from 'react';
 import styled from '@emotion/styled';
 import {IconChevron} from '@sentry/icons/chevron';
 
@@ -15,19 +16,28 @@ export interface PaginationPage {
 }
 
 export interface PaginationProps {
-  onCursor: CursorHandler;
   caption?: React.ReactNode;
   className?: string;
   disabled?: boolean;
   next?: PaginationPage;
+  /** Override the configured navigation for this pagination instance. */
+  onCursor?: CursorHandler;
+  /** Observe page changes without overriding the configured navigation. */
+  onPageChange?: CursorHandler;
   previous?: PaginationPage;
   size?: ButtonProps['size'];
 }
 
-/** Controlled pagination; cursor formats and navigation belong to consumers. */
+const PaginationBehaviorContext = createContext<CursorHandler | undefined>(undefined);
+
+/** Supply default cursor navigation while individual instances can override it. */
+export const PaginationBehaviorContextProvider = PaginationBehaviorContext.Provider;
+
+/** Cursor formats and navigation belong to consumers. */
 export function Pagination({
   className,
   onCursor,
+  onPageChange,
   previous,
   next,
   size = 'sm',
@@ -35,9 +45,16 @@ export function Pagination({
   disabled = false,
 }: PaginationProps) {
   const {t} = useTranslation();
+  const defaultOnCursor = useContext(PaginationBehaviorContext);
+  const handleCursor = onCursor ?? defaultOnCursor;
+
+  if (previous === undefined && next === undefined) {
+    return null;
+  }
   const previousDisabled =
-    disabled || previous === undefined || previous.disabled === true;
-  const nextDisabled = disabled || next === undefined || next.disabled === true;
+    disabled || !handleCursor || previous === undefined || previous.disabled === true;
+  const nextDisabled =
+    disabled || !handleCursor || next === undefined || next.disabled === true;
 
   return (
     <Flex
@@ -55,7 +72,8 @@ export function Pagination({
           size={size}
           disabled={previousDisabled}
           onClick={() => {
-            onCursor(previous?.cursor, -1);
+            handleCursor?.(previous?.cursor, -1);
+            onPageChange?.(previous?.cursor, -1);
           }}
         />
         <Button
@@ -64,7 +82,8 @@ export function Pagination({
           size={size}
           disabled={nextDisabled}
           onClick={() => {
-            onCursor(next?.cursor, 1);
+            handleCursor?.(next?.cursor, 1);
+            onPageChange?.(next?.cursor, 1);
           }}
         />
       </ButtonBar>

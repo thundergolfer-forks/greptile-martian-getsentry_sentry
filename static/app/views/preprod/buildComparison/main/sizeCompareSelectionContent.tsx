@@ -6,14 +6,15 @@ import {parseAsString, useQueryState} from 'nuqs';
 import {Alert} from '@sentry/scraps/alert';
 import {InputGroup} from '@sentry/scraps/input';
 import {Stack} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Heading} from '@sentry/scraps/text';
 
 import {addErrorMessage} from 'sentry/actionCreators/indicator';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {t} from 'sentry/locale';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {parseApiError} from 'sentry/utils/parseApiError';
 import {parseLinkHeader} from 'sentry/utils/parseLinkHeader';
 import type {RequestError} from 'sentry/utils/requestError/requestError';
@@ -200,7 +201,7 @@ export function SizeCompareSelectionContent({
               );
             })}
 
-            {hasPagination && <Pagination pageLinks={pageLinks} />}
+            {hasPagination && <Pagination {...getPaginationProps(pageLinks)} />}
           </Stack>
         )}
       </Stack>

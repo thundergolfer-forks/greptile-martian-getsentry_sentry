@@ -4,14 +4,14 @@ import {UserAvatar} from '@sentry/scraps/avatar';
 import {Tag} from '@sentry/scraps/badge';
 import {Flex, Grid, Stack} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
+import type {CursorHandler} from '@sentry/scraps/pagination';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Select} from '@sentry/scraps/select';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import {ActivityAvatar} from 'sentry/components/activity/item/avatar';
 import {DateTime} from 'sentry/components/dateTime';
-import type {CursorHandler} from 'sentry/components/pagination';
-import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {
   TimeRangeSelector,
@@ -28,6 +28,7 @@ import type {AuditLog, Organization} from 'sentry/types/organization';
 import type {User} from 'sentry/types/user';
 import {getInternalDate} from 'sentry/utils/dates';
 import {getDaysSinceDate} from 'sentry/utils/getDaysSinceDate';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useOrganization} from 'sentry/utils/useOrganization';
 import {useProjects} from 'sentry/utils/useProjects';
 import {useUser} from 'sentry/utils/useUser';
@@ -414,7 +415,7 @@ export function AuditLogList({
             );
           })}
       </SimpleTable>
-      {pageLinks && <Pagination pageLinks={pageLinks} onCursor={onCursor} />}
+      {pageLinks && <Pagination {...getPaginationProps(pageLinks)} onCursor={onCursor} />}
     </div>
   );
 }

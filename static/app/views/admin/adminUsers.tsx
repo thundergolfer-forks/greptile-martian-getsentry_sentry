@@ -7,18 +7,19 @@ import {CompactSelect} from '@sentry/scraps/compactSelect';
 import {Container, Flex, Stack} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Text} from '@sentry/scraps/text';
 
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {SearchBar} from 'sentry/components/searchBar';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {DEFAULT_DEBOUNCE_DURATION} from 'sentry/constants';
 import {t} from 'sentry/locale';
 import type {User} from 'sentry/types/user';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {BreadcrumbTitle} from 'sentry/views/settings/components/settingsBreadcrumb/breadcrumbTitle';
 
 const USERS_COLUMNS: TableColumnConfig[] = [
@@ -144,7 +145,7 @@ export default function AdminUsers() {
         </SimpleTable>
       )}
 
-      {pageLinks && <Pagination pageLinks={pageLinks} />}
+      {pageLinks && <Pagination {...getPaginationProps(pageLinks)} />}
     </Fragment>
   );
 }

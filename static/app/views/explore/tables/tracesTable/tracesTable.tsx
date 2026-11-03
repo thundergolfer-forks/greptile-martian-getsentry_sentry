@@ -4,13 +4,13 @@ import debounce from 'lodash/debounce';
 
 import {Button} from '@sentry/scraps/button';
 import {ExternalLink} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import {Count} from 'sentry/components/count';
 import {EmptyStateWarning} from 'sentry/components/emptyStateWarning';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
-import {Pagination} from 'sentry/components/pagination';
 import {PerformanceDuration} from 'sentry/components/performanceDuration';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {SPAN_PROPS_DOCS_URL} from 'sentry/constants';
@@ -18,6 +18,7 @@ import {t, tct} from 'sentry/locale';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {defined} from 'sentry/utils/defined';
 import {getQueryErrorMessage} from 'sentry/utils/discover/genericDiscoverQuery';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
 import {useProjects} from 'sentry/utils/useProjects';
@@ -122,8 +123,10 @@ export function TracesTable({tracesTableResult}: TracesTableProps) {
         ))}
       </SimpleTable>
       <Pagination
-        pageLinks={result.data?.headers.Link}
-        paginationAnalyticsEvent={paginationAnalyticsEvent}
+        {...getPaginationProps(result.data?.headers.Link)}
+        onPageChange={(_cursor, delta) =>
+          paginationAnalyticsEvent(delta === -1 ? 'Previous' : 'Next')
+        }
       />
     </Fragment>
   );

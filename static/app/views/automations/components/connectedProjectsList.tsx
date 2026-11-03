@@ -2,14 +2,15 @@ import {Fragment, useState} from 'react';
 import {useQuery} from '@tanstack/react-query';
 
 import {Container} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Text} from '@sentry/scraps/text';
 
 import ProjectBadge from 'sentry/components/idBadge/projectBadge';
-import {Pagination, useGetPaginationCaption} from 'sentry/components/pagination';
 import {Placeholder} from 'sentry/components/placeholder';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {t} from 'sentry/locale';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps, useGetPaginationCaption} from 'sentry/utils/pagination';
 import {useOrganization} from 'sentry/utils/useOrganization';
 import {useProjectFromId} from 'sentry/utils/useProjectFromId';
 import {detectorListApiOptions} from 'sentry/views/detectors/hooks';
@@ -111,7 +112,7 @@ export function ConnectedProjectsList({automationId}: Props) {
       </SimpleTable>
       <Pagination
         onCursor={setCursor}
-        pageLinks={pageLinks}
+        {...getPaginationProps(pageLinks)}
         caption={paginationCaption}
       />
     </Container>

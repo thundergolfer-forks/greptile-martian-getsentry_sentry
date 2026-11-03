@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 
 import {UserAvatar} from '@sentry/scraps/avatar';
 import {Container} from '@sentry/scraps/layout';
+import {Pagination, type CursorHandler} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
@@ -14,10 +15,10 @@ import {
 } from 'sentry/actionCreators/indicator';
 import {openSaveQueryModal} from 'sentry/actionCreators/modal';
 import {ActivityAvatar} from 'sentry/components/activity/item/avatar';
-import {Pagination, type CursorHandler} from 'sentry/components/pagination';
 import {SavedEntityTable} from 'sentry/components/savedEntityTable';
 import {t} from 'sentry/locale';
 import {trackAnalytics} from 'sentry/utils/analytics';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
@@ -148,7 +149,8 @@ export function SavedQueriesTable({
     } as CombinedSavedQuery);
   };
 
-  const handleCursor: CursorHandler = (_cursor, pathname, query) => {
+  const handleCursor: CursorHandler = _cursor => {
+    const {pathname, query} = location;
     navigate({
       pathname,
       query: {...query, [cursorKey]: _cursor},
@@ -358,7 +360,7 @@ export function SavedQueriesTable({
           );
         })}
       </SavedEntityTable>
-      <Pagination pageLinks={pageLinks} onCursor={handleCursor} />
+      <Pagination {...getPaginationProps(pageLinks)} onCursor={handleCursor} />
     </Container>
   );
 }

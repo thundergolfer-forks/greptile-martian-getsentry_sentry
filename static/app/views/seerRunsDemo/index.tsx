@@ -2,11 +2,11 @@ import {useCallback, useMemo} from 'react';
 import {useQuery} from '@tanstack/react-query';
 
 import {Container, Stack} from '@sentry/scraps/layout';
+import {Pagination} from '@sentry/scraps/pagination';
 import {COL_WIDTH_UNDEFINED} from '@sentry/scraps/table';
 import {Heading, Text} from '@sentry/scraps/text';
 
 import {LoadingError} from 'sentry/components/loadingError';
-import {Pagination} from 'sentry/components/pagination';
 import {SearchQueryBuilder} from 'sentry/components/searchQueryBuilder';
 import type {GetTagValues} from 'sentry/components/searchQueryBuilder';
 import {SeerMarkdown} from 'sentry/components/seer/markdown';
@@ -16,6 +16,7 @@ import {TimeSince} from 'sentry/components/timeSince';
 import {t} from 'sentry/locale';
 import type {TagCollection} from 'sentry/types/group';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
@@ -183,7 +184,7 @@ export default function SeerRunsDemo() {
               grid={{renderBodyCell}}
               emptyMessage={t('No Seer runs found for this organization.')}
             />
-            <Pagination pageLinks={pageLinks} />
+            <Pagination {...getPaginationProps(pageLinks)} />
           </Container>
         )}
       </Stack>

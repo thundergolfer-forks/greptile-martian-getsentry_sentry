@@ -6,11 +6,11 @@ import {IconStack} from '@sentry/icons/stack';
 import {DropdownMenu, type MenuItemProps} from '@sentry/scraps/dropdownMenu';
 import {Flex, Stack} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 import {COL_WIDTH_UNDEFINED} from '@sentry/scraps/table';
 
 import {normalizeDateTimeParams} from 'sentry/components/pageFilters/parse';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
-import {Pagination} from 'sentry/components/pagination';
 import {DataGrid} from 'sentry/components/tables/dataGrid';
 import {t} from 'sentry/locale';
 import {parseCursor} from 'sentry/utils/cursor';
@@ -18,6 +18,7 @@ import {defined} from 'sentry/utils/defined';
 import type {TableDataRow} from 'sentry/utils/discover/discoverQuery';
 import {parseFunction, prettifyParsedFunction} from 'sentry/utils/discover/fields';
 import {FieldValueType, prettifyTagKey} from 'sentry/utils/fields';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {isRateLimitError} from 'sentry/utils/requestError/requestError';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
@@ -299,7 +300,10 @@ export function LogsAggregateTable({
           },
         }}
       />
-      <Pagination pageLinks={pageLinks} onCursor={cursor => setAggregateCursor(cursor)} />
+      <Pagination
+        {...getPaginationProps(pageLinks)}
+        onCursor={cursor => setAggregateCursor(cursor)}
+      />
     </Stack>
   );
 }

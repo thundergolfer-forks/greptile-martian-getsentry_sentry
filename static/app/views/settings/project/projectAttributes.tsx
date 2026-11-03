@@ -5,12 +5,12 @@ import {FeatureBadge, Tag} from '@sentry/scraps/badge';
 import {CompactSelect} from '@sentry/scraps/compactSelect';
 import {Container, Flex} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Text} from '@sentry/scraps/text';
 import {Tooltip} from '@sentry/scraps/tooltip';
 
 import Feature from 'sentry/components/acl/feature';
-import {Pagination} from 'sentry/components/pagination';
 import {SearchBar} from 'sentry/components/searchBar';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {getNextSort} from 'sentry/components/tables/getNextSort';
@@ -21,6 +21,7 @@ import {parseCursor} from 'sentry/utils/cursor';
 import type {Sort} from 'sentry/utils/discover/fields';
 import {FieldValueType} from 'sentry/utils/fields';
 import {MarkedText} from 'sentry/utils/marked/markedText';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar, decodeSorts, encodeSort} from 'sentry/utils/queryString';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
@@ -232,7 +233,7 @@ function ProjectAttributesSettings() {
           />
         ))}
       </SimpleTable>
-      <Pagination pageLinks={data?.headers.Link} caption={caption} />
+      <Pagination {...getPaginationProps(data?.headers.Link)} caption={caption} />
     </SentryDocumentTitle>
   );
 }

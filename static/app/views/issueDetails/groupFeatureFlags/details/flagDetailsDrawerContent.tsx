@@ -6,6 +6,7 @@ import {LinkButton} from '@sentry/scraps/button';
 import {DropdownMenu} from '@sentry/scraps/dropdownMenu';
 import {Container, Flex, Stack} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 import {RevealOnHover} from '@sentry/scraps/revealOnHover';
 import type {TableColumnConfig} from '@sentry/scraps/table';
 import {Text} from '@sentry/scraps/text';
@@ -15,12 +16,12 @@ import {DateTime} from 'sentry/components/dateTime';
 import {makeFeatureFlagSearchKey} from 'sentry/components/events/featureFlags/utils';
 import {organizationFlagLogOptions} from 'sentry/components/featureFlags/hooks/useOrganizationFlagLog';
 import {getFlagActionLabel, type RawFlag} from 'sentry/components/featureFlags/utils';
-import {Pagination} from 'sentry/components/pagination';
 import {SimpleTable} from 'sentry/components/tables/simpleTable';
 import {t} from 'sentry/locale';
 import type {Group} from 'sentry/types/group';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useCopyToClipboard} from 'sentry/utils/useCopyToClipboard';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
@@ -132,8 +133,9 @@ export function FlagDetailsDrawerContent({group}: Props) {
       </Container>
       {isPending || isError || !flagLog.json.data.length ? null : (
         <Pagination
-          pageLinks={pageLinks}
-          onCursor={(cursor, path, query) => {
+          {...getPaginationProps(pageLinks)}
+          onCursor={cursor => {
+            const {pathname: path, query} = location;
             trackAnalytics('flags.logs-paginated', {
               direction: cursor?.endsWith(':1') ? 'prev' : 'next',
               organization,

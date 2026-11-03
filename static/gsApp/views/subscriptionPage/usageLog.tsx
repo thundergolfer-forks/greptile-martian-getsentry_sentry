@@ -8,12 +8,12 @@ import {Tag} from '@sentry/scraps/badge';
 import {CompactSelect} from '@sentry/scraps/compactSelect';
 import {Container, Flex, Grid} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import type {CursorHandler} from '@sentry/scraps/pagination';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Text} from '@sentry/scraps/text';
 
 import {DateTime} from 'sentry/components/dateTime';
 import {LoadingError} from 'sentry/components/loadingError';
-import type {CursorHandler} from 'sentry/components/pagination';
-import {Pagination} from 'sentry/components/pagination';
 import {Placeholder} from 'sentry/components/placeholder';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {Timeline} from 'sentry/components/timeline';
@@ -22,6 +22,7 @@ import type {AuditLog} from 'sentry/types/organization';
 import type {User} from 'sentry/types/user';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
 import {getTimeFormat} from 'sentry/utils/dates';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useMemoWithPrevious} from 'sentry/utils/useMemoWithPrevious';
@@ -218,7 +219,7 @@ export default function UsageLog() {
           </Timeline.Container>
         )}
       </Grid>
-      <Pagination pageLinks={data?.headers.Link} onCursor={handleCursor} />
+      <Pagination {...getPaginationProps(data?.headers.Link)} onCursor={handleCursor} />
     </Fragment>
   );
 

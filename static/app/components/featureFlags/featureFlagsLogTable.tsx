@@ -1,13 +1,16 @@
 import {useCallback} from 'react';
 import styled from '@emotion/styled';
 
+import {Pagination} from '@sentry/scraps/pagination';
+
 import {useAnalyticsArea} from 'sentry/components/analyticsArea';
 import {getFlagActionLabel, type RawFlag} from 'sentry/components/featureFlags/utils';
-import {Pagination} from 'sentry/components/pagination';
 import {DataGrid, type GridColumnOrder} from 'sentry/components/tables/dataGrid';
 import {t} from 'sentry/locale';
 import {trackAnalytics} from 'sentry/utils/analytics';
 import {FIELD_FORMATTERS} from 'sentry/utils/discover/fieldRenderers';
+import {getPaginationProps} from 'sentry/utils/pagination';
+import {useLocation} from 'sentry/utils/useLocation';
 import {useNavigate} from 'sentry/utils/useNavigate';
 import {useOrganization} from 'sentry/utils/useOrganization';
 
@@ -41,9 +44,11 @@ export function FeatureFlagsLogTable({
   const organization = useOrganization();
   const analyticsArea = useAnalyticsArea();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handlePageChange = useCallback(
-    (cursor: string | undefined, path: string, searchQuery: Record<string, any>) => {
+    (cursor: string | undefined) => {
+      const {pathname: path, query: searchQuery} = location;
       trackAnalytics('flags.logs-paginated', {
         direction: cursor?.endsWith(':1') ? 'prev' : 'next',
         organization,
@@ -54,7 +59,7 @@ export function FeatureFlagsLogTable({
         query: {...searchQuery, [cursorKeyName]: cursor},
       });
     },
-    [analyticsArea, cursorKeyName, navigate, organization]
+    [analyticsArea, cursorKeyName, location, navigate, organization]
   );
 
   return (
@@ -75,7 +80,10 @@ export function FeatureFlagsLogTable({
         data-test-id="audit-log-table"
       />
 
-      <PaginationNoMargin pageLinks={pageLinks} onCursor={handlePageChange} />
+      <PaginationNoMargin
+        {...getPaginationProps(pageLinks)}
+        onCursor={handlePageChange}
+      />
     </div>
   );
 }

@@ -1,10 +1,11 @@
 import {Fragment, useContext} from 'react';
 import {useQuery} from '@tanstack/react-query';
 
+import {Pagination} from '@sentry/scraps/pagination';
+
 import * as Layout from 'sentry/components/layouts/thirds';
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {Panel} from 'sentry/components/panels/panel';
 import {PanelBody} from 'sentry/components/panels/panelBody';
 import {PanelHeader} from 'sentry/components/panels/panelHeader';
@@ -14,6 +15,7 @@ import type {Repository} from 'sentry/types/integrations';
 import type {Organization} from 'sentry/types/organization';
 import type {Project} from 'sentry/types/project';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {routeTitleGen} from 'sentry/utils/routeTitle';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -115,7 +117,7 @@ function FilesChangedList({organization, releaseRepos, projectSlug}: FilesChange
                   </Panel>
                 );
               })}
-              <Pagination pageLinks={fileListPageLinks} />
+              <Pagination {...getPaginationProps(fileListPageLinks)} />
             </Fragment>
           ) : (
             <EmptyState>

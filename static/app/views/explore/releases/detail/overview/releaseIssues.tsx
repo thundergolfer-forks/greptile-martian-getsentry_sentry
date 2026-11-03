@@ -5,16 +5,17 @@ import {parseAsString, parseAsStringEnum, useQueryState} from 'nuqs';
 
 import {LinkButton} from '@sentry/scraps/button';
 import {Container, Flex, Grid} from '@sentry/scraps/layout';
+import {Pagination, type CursorHandler} from '@sentry/scraps/pagination';
 import {SegmentedControl} from '@sentry/scraps/segmentedControl';
 
 import {GroupList} from 'sentry/components/issues/groupList';
-import {Pagination} from 'sentry/components/pagination';
 import {QueryCount} from 'sentry/components/queryCount';
 import {DEFAULT_RELATIVE_PERIODS} from 'sentry/constants';
 import {t, tct} from 'sentry/locale';
 import {escapeDoubleQuotes} from 'sentry/utils';
 import {apiOptions} from 'sentry/utils/api/apiOptions';
 import {DemoTourElement, DemoTourStep} from 'sentry/utils/demoMode/demoTours';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {MutableSearch} from 'sentry/utils/tokenizeSearch';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -194,7 +195,7 @@ export function ReleaseIssues({
   const organization = useOrganization();
 
   const [pageLinks, setPageLinks] = useState<string | null>(null);
-  const [onCursor, setOnCursor] = useState<(() => void) | undefined>();
+  const [onCursor, setOnCursor] = useState<CursorHandler | undefined>();
 
   const [issuesType, setIssuesType] = useQueryState(
     'issuesType',
@@ -397,7 +398,11 @@ export function ReleaseIssues({
           </Container>
 
           <Container justifySelf="end">
-            <StyledPagination pageLinks={pageLinks} onCursor={onCursor} size="xs" />
+            <StyledPagination
+              {...getPaginationProps(pageLinks)}
+              onCursor={onCursor}
+              size="xs"
+            />
           </Container>
         </Grid>
       </Flex>

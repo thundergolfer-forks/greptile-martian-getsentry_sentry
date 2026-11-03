@@ -1,12 +1,14 @@
 import {Fragment} from 'react';
 import {useQuery} from '@tanstack/react-query';
 
+import {Pagination} from '@sentry/scraps/pagination';
+
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {t} from 'sentry/locale';
 import type {Project} from 'sentry/types/project';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {decodeScalar} from 'sentry/utils/queryString';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -59,7 +61,7 @@ export function UptimeChecksTable({
       ) : (
         <UptimeChecksGrid traceSampling={traceSampling} uptimeChecks={data?.json ?? []} />
       )}
-      <Pagination pageLinks={data?.headers.Link} />
+      <Pagination {...getPaginationProps(data?.headers.Link)} />
     </Fragment>
   );
 }

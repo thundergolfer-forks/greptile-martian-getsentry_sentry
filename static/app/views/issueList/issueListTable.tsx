@@ -2,10 +2,10 @@ import {Fragment} from 'react';
 import styled from '@emotion/styled';
 
 import {useResponsivePropValue} from '@sentry/scraps/layout';
+import type {CursorHandler} from '@sentry/scraps/pagination';
+import {Pagination} from '@sentry/scraps/pagination';
 import {HoverOverlayGroupProvider} from '@sentry/scraps/useHoverOverlay';
 
-import type {CursorHandler} from 'sentry/components/pagination';
-import {Pagination} from 'sentry/components/pagination';
 import {
   StreamGroupTable,
   useStreamGroupColumns,
@@ -14,6 +14,7 @@ import {t} from 'sentry/locale';
 import type {PageFilters} from 'sentry/types/core';
 import {DemoTourElement, DemoTourStep} from 'sentry/utils/demoMode/demoTours';
 import type {IndexedMembersByProject} from 'sentry/utils/members/shared';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {VisuallyCompleteWithData} from 'sentry/utils/performanceForSentry';
 import {useLocation} from 'sentry/utils/useLocation';
 import {IssueListActions} from 'sentry/views/issueList/actions';
@@ -160,9 +161,11 @@ export function IssueListTable({
       </DemoTourElement>
       <StyledPagination
         caption={paginationCaption}
-        pageLinks={pageLinks}
+        {...getPaginationProps(pageLinks)}
         onCursor={onCursor}
-        paginationAnalyticsEvent={paginationAnalyticsEvent}
+        onPageChange={(_cursor, delta) =>
+          paginationAnalyticsEvent(delta === -1 ? 'Previous' : 'Next')
+        }
       />
     </Fragment>
   );

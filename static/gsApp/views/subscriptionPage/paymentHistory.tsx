@@ -19,15 +19,16 @@ import {
 } from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Text} from '@sentry/scraps/text';
 
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {t, tct} from 'sentry/locale';
 import type {Organization} from 'sentry/types/organization';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {capitalize} from 'sentry/utils/string/capitalize';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -270,7 +271,7 @@ function ReceiptGrid({
         })}
       </Stack>
       {payments.length === 0 && <Text>{t('No receipts found')}</Text>}
-      {paymentsPageLinks && <Pagination pageLinks={paymentsPageLinks} />}
+      {paymentsPageLinks && <Pagination {...getPaginationProps(paymentsPageLinks)} />}
     </Fragment>
   );
 }

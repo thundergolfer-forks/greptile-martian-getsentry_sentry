@@ -15,6 +15,7 @@ import {DropdownMenu} from '@sentry/scraps/dropdownMenu';
 import {Flex, Stack} from '@sentry/scraps/layout';
 import {ExternalLink, Link} from '@sentry/scraps/link';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import type {CursorHandler} from '@sentry/scraps/pagination';
 
 import {updateSavedQueryVisit} from 'sentry/actionCreators/discoverSavedQueries';
 import {fetchTotalCount} from 'sentry/actionCreators/events';
@@ -37,7 +38,6 @@ import {
 } from 'sentry/components/pageFilters/parse';
 import {ProjectPageFilter} from 'sentry/components/pageFilters/project/projectPageFilter';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
-import type {CursorHandler} from 'sentry/components/pagination';
 import {
   AiQueryProvider,
   useAiQueryContext,
@@ -477,7 +477,8 @@ export class Results extends Component<Props, State> {
     );
   }
 
-  handleCursor: CursorHandler = (cursor, path, query, _direction) => {
+  handleCursor: CursorHandler = cursor => {
+    const {pathname: path, query} = this.props.location;
     this.props.navigate({
       pathname: path,
       query: {...query, cursor},

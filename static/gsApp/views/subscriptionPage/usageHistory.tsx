@@ -10,17 +10,18 @@ import {Button} from '@sentry/scraps/button';
 import {CompactSelect, type SelectOption} from '@sentry/scraps/compactSelect';
 import {Container, Flex, Stack} from '@sentry/scraps/layout';
 import {OverlayTrigger} from '@sentry/scraps/overlayTrigger';
+import {Pagination} from '@sentry/scraps/pagination';
 import {Text} from '@sentry/scraps/text';
 
 import {LoadingError} from 'sentry/components/loadingError';
 import {LoadingIndicator} from 'sentry/components/loadingIndicator';
-import {Pagination} from 'sentry/components/pagination';
 import {PanelItem} from 'sentry/components/panels/panelItem';
 import {SentryDocumentTitle} from 'sentry/components/sentryDocumentTitle';
 import {t, tct} from 'sentry/locale';
 import {DataCategory} from 'sentry/types/core';
 import {apiOptions, selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
 import {formatPercentage} from 'sentry/utils/number/formatPercentage';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
 import {useProjects} from 'sentry/utils/useProjects';
@@ -117,7 +118,9 @@ function UsageHistory({subscription}: Props) {
               <UsageHistoryRow key={row.id} history={row} subscription={subscription} />
             ))}
           </Container>
-          {usageListPageLinks && <Pagination pageLinks={usageListPageLinks} />}
+          {usageListPageLinks && (
+            <Pagination {...getPaginationProps(usageListPageLinks)} />
+          )}
         </Fragment>
       ) : (
         <ContactBillingMembers />

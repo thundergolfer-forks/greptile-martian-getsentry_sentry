@@ -9,6 +9,7 @@ import {Button} from '@sentry/scraps/button';
 import {InfoText} from '@sentry/scraps/info';
 import {Container, Flex} from '@sentry/scraps/layout';
 import {Link} from '@sentry/scraps/link';
+import {Pagination} from '@sentry/scraps/pagination';
 import {COL_WIDTH_UNDEFINED} from '@sentry/scraps/table';
 import {Text} from '@sentry/scraps/text';
 import {Tooltip} from '@sentry/scraps/tooltip';
@@ -16,7 +17,6 @@ import {isOverflown} from '@sentry/scraps/useHoverOverlay';
 
 import {normalizeDateTimeParams} from 'sentry/components/pageFilters/parse';
 import {usePageFilters} from 'sentry/components/pageFilters/usePageFilters';
-import {Pagination} from 'sentry/components/pagination';
 import {Placeholder} from 'sentry/components/placeholder';
 import {modifyFilterValue} from 'sentry/components/searchQueryBuilder/hooks/useQueryBuilderState';
 import {
@@ -38,6 +38,7 @@ import {TimeSince} from 'sentry/components/timeSince';
 import {t} from 'sentry/locale';
 import {selectJsonWithHeaders} from 'sentry/utils/api/apiOptions';
 import {FieldKind} from 'sentry/utils/fields';
+import {getPaginationProps} from 'sentry/utils/pagination';
 import {parseAsStringArray} from 'sentry/utils/url/parseAsStringArray';
 import {useLocation} from 'sentry/utils/useLocation';
 import {useOrganization} from 'sentry/utils/useOrganization';
@@ -356,7 +357,7 @@ export function TracesTable({
         {tableComponent}
         {tracesRequest.isPlaceholderData && <LoadingOverlay />}
       </Container>
-      <StyledPagination pageLinks={pageLinks} onCursor={setCursor} />
+      <StyledPagination {...getPaginationProps(pageLinks)} onCursor={setCursor} />
     </Container>
   );
 }

@@ -4,9 +4,10 @@ import type {LegendComponentOption} from 'echarts';
 import omit from 'lodash/omit';
 import qs from 'query-string';
 
+import {DateTime} from '@sentry/scraps/dateTime';
+
 import {openWidgetViewerModal} from 'sentry/actionCreators/modal';
 import type {Client} from 'sentry/api';
-import {DateTime} from 'sentry/components/dateTime';
 import {ErrorBoundary} from 'sentry/components/errorBoundary';
 import {
   isWidgetViewerPath,

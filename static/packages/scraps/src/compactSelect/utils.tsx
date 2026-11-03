@@ -466,7 +466,7 @@ export function shouldCloseOnSelect({
     // type assertions are necessary here because we don't have the discriminated union anymore
     return closeOnSelect((multiple ? selectedOptions : selectedOptions[0]) as never);
   }
-  if (defined(closeOnSelect)) {
+  if (closeOnSelect != null) {
     return closeOnSelect;
   }
   // By default, single-selection lists close on select, while multiple-selection
@@ -506,8 +506,4 @@ export function getDuplicateOptionKeysInfo<Value extends SelectKey>(
 
   collect(items);
   return {duplicateOptionKeys: [...duplicates], hasSections, optionCount};
-}
-
-function defined<T>(value: T | null | undefined): value is T {
-  return value !== null && value !== undefined;
 }

@@ -230,7 +230,7 @@ export function List<Value extends SelectKey>({
       // react-aria turns all keys into strings
       // we're setting selectedKeys to an empty array when value is undefined, because
       // undefined makes react-aria treat it as uncontrolled
-      selectedKeys: defined(value) ? [getEscapedKey(value)] : [],
+      selectedKeys: value == null ? [] : [getEscapedKey(value)],
       disallowEmptySelection: !clearable,
       allowDuplicateSelectionEvents: true,
       onSelectionChange: selection => {
@@ -402,8 +402,4 @@ export function List<Value extends SelectKey>({
         )}
     </Fragment>
   );
-}
-
-function defined<T>(value: T | null | undefined): value is T {
-  return value !== null && value !== undefined;
 }

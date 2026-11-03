@@ -1,7 +1,7 @@
 from collections import defaultdict
 from collections.abc import Mapping, MutableMapping, Sequence
 from datetime import datetime
-from typing import Any, TypedDict
+from typing import Any, TypedDict, cast
 
 from sentry.api.serializers import Serializer, register, serialize
 from sentry.api.serializers.rest_framework.base import convert_dict_key_case, snake_to_camel_case
@@ -12,6 +12,7 @@ from sentry.workflow_engine.models import (
     Workflow,
     WorkflowDataConditionGroup,
 )
+from sentry.workflow_engine.models.workflow import VisibleWorkflowType
 from sentry.workflow_engine.processors.workflow_fire_history import get_last_fired_dates
 
 
@@ -42,7 +43,7 @@ class TriggerSerializerResponse(TypedDict, total=False):
 class WorkflowSerializerResponse(TypedDict):
     id: str
     name: str
-    type: str
+    type: VisibleWorkflowType
     organizationId: str
     createdBy: str | None
     dateCreated: datetime
@@ -115,7 +116,7 @@ class WorkflowSerializer(Serializer[WorkflowSerializerResponse]):
         return {
             "id": str(obj.id),
             "name": str(obj.name),
-            "type": obj.type,
+            "type": cast(VisibleWorkflowType, obj.type),
             "organizationId": str(obj.organization_id),
             "createdBy": str(obj.created_by_id) if obj.created_by_id else None,
             "dateCreated": obj.date_added,

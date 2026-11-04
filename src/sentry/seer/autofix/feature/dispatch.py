@@ -263,7 +263,7 @@ def trigger_autofix_feature(
         tags={
             "referrer": args.referrer.value,
             "step": args.step.value,
-            "mode": "single_run" if single_run else "steps",
+            "mode": "single_run" if single_run else "multi_step",
         },
         sample_rate=1,
     )

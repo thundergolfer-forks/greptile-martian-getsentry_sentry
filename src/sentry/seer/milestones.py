@@ -8,6 +8,7 @@ from sentry.models.pullrequest import (
     PullRequestLifecycleState,
     is_abandoned_pull_request_state,
 )
+from sentry.seer.autofix.single_run import single_run_root_cause_payload
 from sentry.seer.models.run import (
     RootCauseArtifactExtras,
     SeerRun,
@@ -49,8 +50,12 @@ def milestones_from_state(state: SeerRunState) -> dict[str, SeerRunMilestoneExtr
     """
     result: dict[str, SeerRunMilestoneExtras] = {}
     artifacts = state.get_artifacts()
-    if "root_cause" in artifacts:
-        data = artifacts["root_cause"].data or {}
+    data = (
+        (artifacts["root_cause"].data or {})
+        if "root_cause" in artifacts
+        else single_run_root_cause_payload(state)
+    )
+    if data is not None:
         description = data.get("one_line_description")
         if isinstance(description, str):
             extras: RootCauseArtifactExtras = {"one_line_description": description}

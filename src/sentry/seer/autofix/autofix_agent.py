@@ -243,6 +243,14 @@ def _handle_step_started_events(
 SINGLE_RUN_STEP = "single_run"
 
 
+def is_single_run(state: SeerRunState) -> bool:
+    for block in reversed(state.blocks):
+        step = (block.message.metadata or {}).get("step")
+        if step is not None:
+            return step == SINGLE_RUN_STEP
+    return False
+
+
 def get_current_step(
     state: SeerRunState,
 ) -> tuple[AutofixStep, AutofixReferrer | None] | tuple[None, None]:

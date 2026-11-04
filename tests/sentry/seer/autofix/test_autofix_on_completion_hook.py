@@ -93,7 +93,9 @@ def run_state(
 
 
 def single_run_memory_block(
-    root_cause: dict[str, Any] | None = None, block_id: str = "single-run"
+    root_cause: dict[str, Any] | None = None,
+    block_id: str = "single-run",
+    with_code: bool = False,
 ) -> MemoryBlock:
     return MemoryBlock(
         id=block_id,
@@ -106,6 +108,16 @@ def single_run_memory_block(
         artifacts=(
             [Artifact(key="single_run_root_cause", data=root_cause, reason="explorer")]
             if root_cause is not None
+            else []
+        ),
+        merged_file_patches=(
+            [
+                AgentFilePatch(
+                    repo_name="test-repo",
+                    patch=FilePatch(path="test.py", type="M", added=5, removed=2),
+                )
+            ]
+            if with_code
             else []
         ),
     )
@@ -2692,3 +2704,139 @@ class TestCompletionMode(TestCase):
             if c.args[0].type == "ai.autofix.root_cause.completed"
         ]
         assert event.mode == "single_run"
+
+
+_ROOT_CAUSE = {"headline": "H", "cause": "C"}
+
+
+def _created_pr() -> dict[str, RepoPRState]:
+    return {
+        "test-repo": RepoPRState(
+            repo_name="test-repo",
+            pr_id=77,
+            pr_number=7,
+            pr_url="https://example.com/pull/7",
+            pr_creation_status="completed",
+        )
+    }
+
+
+class TestSingleRunCompletion(TestCase):
+    def setUp(self) -> None:
+        super().setUp()
+        self.group = self.create_group(project=self.project)
+        self.seer_run = self.create_seer_run(organization=self.organization, seer_run_state_id=123)
+
+    def _state(self, block: MemoryBlock, **kwargs: Any) -> SeerRunState:
+        return run_state(blocks=[block], metadata={"group_id": self.group.id}, **kwargs)
+
+    def _execute(self, state: SeerRunState) -> dict[str, MagicMock]:
+        with (
+            patch(f"{HOOK_PATH}.fetch_run_status", return_value=state),
+            patch(f"{HOOK_PATH}.broadcast_webhooks_for_organization.delay") as broadcast,
+            patch(f"{HOOK_PATH}.process_autofix_updates.apply_async"),
+            patch(f"{HOOK_PATH}.SeerAutofixOperator.has_access", return_value=True),
+            patch(f"{HOOK_PATH}.emit_pr_ready_for_review") as ready,
+            patch(f"{HOOK_PATH}.trigger_autofix_agent") as trigger,
+            patch(f"{HOOK_PATH}.trigger_push_changes") as push,
+            patch(f"{HOOK_PATH}.metrics.incr") as metrics_incr,
+        ):
+            AutofixOnCompletionHook.execute(self.organization, 123)
+        return {
+            "broadcast": broadcast,
+            "ready": ready,
+            "trigger": trigger,
+            "push": push,
+            "metrics": metrics_incr,
+        }
+
+    @staticmethod
+    def _events(mocks: dict[str, MagicMock]) -> list[str]:
+        return [c.kwargs["event_name"] for c in mocks["broadcast"].call_args_list]
+
+    def test_root_cause_only_announces_root_cause(self) -> None:
+        mocks = self._execute(self._state(single_run_memory_block(_ROOT_CAUSE)))
+
+        assert self._events(mocks) == ["root_cause_completed"]
+        payload = mocks["broadcast"].call_args.kwargs["payload"]
+        assert payload["root_cause"]["one_line_description"] == "C"
+        assert Activity.objects.filter(
+            group=self.group, type=ActivityType.SEER_RCA_COMPLETED.value
+        ).exists()
+        mocks["trigger"].assert_not_called()
+        mocks["push"].assert_not_called()
+
+    def test_pr_announces_all_three_and_ready_for_review(self) -> None:
+        state = self._state(single_run_memory_block(_ROOT_CAUSE, with_code=True))
+        state.repo_pr_states = _created_pr()
+
+        mocks = self._execute(state)
+
+        assert self._events(mocks) == ["root_cause_completed", "coding_completed", "pr_created"]
+        mocks["ready"].assert_called_once()
+        mocks["push"].assert_not_called()
+
+    def test_draft_pr_is_not_marked_ready(self) -> None:
+        state = self._state(single_run_memory_block(_ROOT_CAUSE, with_code=True))
+        state.repo_pr_states = _created_pr()
+
+        with self.feature(REVIEW_REQUEST_FLAG):
+            mocks = self._execute(state)
+
+        mocks["ready"].assert_not_called()
+
+    def test_second_execute_announces_nothing_new(self) -> None:
+        state = self._state(single_run_memory_block(_ROOT_CAUSE, with_code=True))
+
+        self._execute(state)
+        mocks = self._execute(state)
+
+        assert self._events(mocks) == []
+
+    def test_pr_after_first_completion_announces_only_pr(self) -> None:
+        state = self._state(single_run_memory_block(_ROOT_CAUSE, with_code=True))
+        self._execute(state)
+        state.repo_pr_states = _created_pr()
+
+        mocks = self._execute(state)
+
+        assert self._events(mocks) == ["pr_created"]
+
+    def test_pr_still_creating_or_failed_still_announces_earlier_stages(self) -> None:
+        for status in ("creating", "error"):
+            with self.subTest(status=status):
+                SeerRun.objects.filter(id=self.seer_run.id).update(extras={})
+                state = self._state(single_run_memory_block(_ROOT_CAUSE, with_code=True))
+                state.repo_pr_states = {
+                    "test-repo": RepoPRState(repo_name="test-repo", pr_creation_status=status)
+                }
+
+                mocks = self._execute(state)
+
+                assert self._events(mocks) == ["root_cause_completed", "coding_completed"]
+
+    def test_code_without_root_cause_announces_only_coding(self) -> None:
+        mocks = self._execute(self._state(single_run_memory_block(with_code=True)))
+
+        assert self._events(mocks) == ["coding_completed"]
+
+    def test_nothing_saved_announces_nothing(self) -> None:
+        mocks = self._execute(self._state(single_run_memory_block()))
+
+        assert self._events(mocks) == []
+        assert not Activity.objects.filter(group=self.group).exists()
+
+    def test_not_completed_run_announces_nothing(self) -> None:
+        mocks = self._execute(self._state(single_run_memory_block(_ROOT_CAUSE), status="error"))
+
+        assert self._events(mocks) == []
+
+    def test_single_run_metric_tagged_single_run(self) -> None:
+        mocks = self._execute(self._state(single_run_memory_block(_ROOT_CAUSE)))
+
+        complete_tags = [
+            c.kwargs["tags"]
+            for c in mocks["metrics"].call_args_list
+            if c.args[0] == "autofix.explorer.complete"
+        ]
+        assert complete_tags and all(tags["mode"] == "single_run" for tags in complete_tags)
